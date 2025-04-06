@@ -36,8 +36,8 @@
 
 
                             <div class="mx-auto px-4 w-full max-[520px]:max-w-[600px]  max-sm:flex-col flex gap-4 items-center justify-center py-8">
-                                <a href="" class="px-10 py-3 rounded-md text-center border-none text-lg text-white shadow bg-[#624E88] hover:bg-[#58457b]">Edit Profile</a>
-                                <a href="" class="px-10 py-3 rounded-md text-center border-none text-lg text-white shadow bg-red-700 hover:bg-red-800">Change Passsword</a>
+                                <a href="{{route('admin.editProfile')}}" class="px-10 py-3 rounded-md text-center border-none text-lg text-white shadow bg-[#624E88] hover:bg-[#58457b]">Edit Profile</a>
+                                <a href="{{route('admin.editPassword')}}" class="px-10 py-3 rounded-md text-center border-none text-lg text-white shadow bg-red-700 hover:bg-red-800">Change Passsword</a>
                             </div>
                         
 
@@ -51,6 +51,79 @@
        
     </div>
 </div>
+
+        @if ($errors->any())
+        @foreach ($errors->all() as $error)
+        <dialog id="my_modal_39" class="modal">
+            <div class="modal-box">
+            <h3 class="text-xl font-bold">Failed!</h3>
+            <p class="py-4 pt-8 text-center text-red-600">{{$error}}</p>
+            <div class="modal-action">
+                <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">Close</button>
+                </form>
+            </div>
+            </div>
+            </dialog>
+        
+            <!-- JavaScript to automatically open modal -->
+        <script>
+            // Automatically open modal on page load
+            window.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('my_modal_39').showModal();
+            });
+        </script>
+        @endforeach
+
+        @endif
+
+        @if (session()->has('success'))
+        <dialog id="my_modal_40" class="modal">
+        <div class="modal-box">
+        <h3 class="text-xl font-bold">Success!</h3>
+        <p class="py-4 pt-8 text-center text-green-600">{{session('success')}}</p>
+        <div class="modal-action">
+        <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+        </form>
+        </div>
+        </div>
+        </dialog>
+
+        <!-- JavaScript to automatically open modal -->
+        <script>
+        // Automatically open modal on page load
+        window.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('my_modal_40').showModal();
+        });
+        </script>
+        @endif
+
+
+        @if (session()->has('failed'))
+        <dialog id="my_modal_39" class="modal">
+        <div class="modal-box">
+        <h3 class="text-xl font-bold">Failed!</h3>
+        <p class="py-4 pt-8 text-center text-red-600">{{session('failed')}}</p>
+        <div class="modal-action">
+        <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+        </form>
+        </div>
+        </div>
+        </dialog>
+
+        <!-- JavaScript to automatically open modal -->
+        <script>
+        // Automatically open modal on page load
+        window.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('my_modal_39').showModal();
+        });
+        </script>
+        @endif
 
 
 

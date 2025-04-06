@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Text Twist - Login</title>
+    <title>Text Twist - Forgot Password</title>
 
     @vite('resources/css/app.css')
     @vite('resources/scss/bg.scss')
@@ -25,22 +25,20 @@
         
         {{-- content --}}
        <div class="pt-40">
-          <form action="{{route("user.login")}}" method="POST" class="flex justify-center items-center flex-col gap-4 rounded-md outline-none  max-w-[500px] mx-auto shadow-xl p-8 px-8">
+          <form action="{{route('password.email')}}" method="POST" class="flex justify-center items-center flex-col gap-4 rounded-md outline-none  max-w-[500px] mx-auto shadow-xl p-8 px-8">
               @csrf
-              <h4 class="text-3xl text-center flex py-3 text-yellow-300">Login</h4>
+              <h4 class="text-xl text-center flex py-3 text-yellow-300">Forgot Password</h4>
+              <p class="py-2 text-sm text-center">Enter your email and we will send you a reset password link.</p>
             <div>
-                  <label for="username" class=" text-lg text-center text-white">Username:</label>
-                  <input type="text" id="username"  name="username" class="nes-input h-1/2 rounded-md outline-none text-black text-[16px] bg-white">
+                  <label for="email" class=" text-lg text-center text-white">Email:</label>
+                  <input type="text" id="email"  name="email" class="nes-input h-1/2 rounded-md outline-none text-black text-[16px] bg-white">
             </div>
-            <div>
-                  <label for="password" class=" text-lg text-center text-white">Password:</label>
-                  <input type="password" id="password" name="password" class="nes-input h-1/2 rounded-md outline-none text-black text-[16px] bg-white">
-            </div>
+          
             <button type="submit" class="text-xl rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-4 hover:no-underline hover:text-white">
-                  Login
+                  Submit
             </button>
-            <a href="{{ route('password.request') }}" class="text-fuchsia-900 text-center text-sm hover:underline block">Forgot Password?</a>
-            <p class="text-center text-sm py-3">Don't have an account yet? <a href="{{route("signup")}}" class=" hover:underline text-fuchsia-900 hover:text-fuchsia-900 hover:cale-50">Signup Here</a></p>
+            <p class="text-center text-sm py-2">Don't have an account yet? <a href="{{route("signup")}}" class=" hover:underline text-fuchsia-900 hover:text-fuchsia-900 hover:cale-50">Signup Here</a></p>
+            <p class="text-center md:col-span-2 md:max-w-[400px] md:mx-auto text-sm py-1">Already have an account? <a href="{{route("login")}}" class=" hover:underline text-fuchsia-900 hover:text-fuchsia-900 hover:cale-50">Login</a></p>
           </form>
        </div>
 

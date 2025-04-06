@@ -1,7 +1,6 @@
 @extends('player.layout')
 
 @section('content')
-
 <div class="play text-lg max-md:text-center" data-splitting>Player Profile</div>
         
 
@@ -39,51 +38,31 @@
        </div>
     
 </nav>
-{{-- content --}}
-
-<div class="flex justify-center items-center text-center pt-6 px-4 gap-7">
-    <h4 class="text-white text-lg">HIGHEST LEVEL CLEARED: <span class="text-yellow-200">{{auth()->user()->userProfile->lvl_cleared}}</span></h4>
-    <h4 class="text-white text-lg">HIGHSCORE: <span class="text-yellow-200">{{auth()->user()->userProfile->highscore}} pts</span></h4>
-</div>
-
-<div class="grid justify-center items-center grid-cols-1 md:grid-cols-2 gap-4 rounded-md outline-none  max-w-[1000px] mx-auto shadow-xl p-8 max-sm:pt-4">
+    
+<div class="mt-30 flex justify-center items-center ">
    
-  <div>
-       <label for="firstname" class=" text-lg text-center text-white">FirstName:</label>
-       <input type="text" id="firstname" readonly  value="{{auth()->user()->userProfile->firstname}}"  name="firstname" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
-  </div>
-  <div>
-    <label for="middlename" class=" text-lg text-center text-white">MiddleName:</label>
-    <input type="text" id="middlename" readonly value="{{auth()->user()->userProfile->middlename}}" name="middlename" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
+        <form action="{{route('player.updatePassword')}}" method="POST" class="grid grid-cols-1 max-w-2xl gap-6 pt-5 rounded-lg shadow-xl px-8 py-8 ">
+          @csrf
+          <h1 class="text-xl font-bold text-center py-3 ">Edit Password</h1>
+            <div class="grid w-full gap-4 ">
+                <label for="" class="text-lg">Current Password:</label>
+                <input type="password" name="current_password"  class="nes-input h-full rounded-md outline-none text-black md:text-[16px] text-[16px] bg-white"  >
+             </div6
+            <div class="grid w-full gap-4 ">
+                 <label for="" class="text-lg">New Password:</label>
+                <input type="password" name="new_password"  class="nes-input h-full rounded-md outline-none text-black md:text-[16px] text-[16px] bg-white">
+                 </div>
+             <div class="grid w-full gap-4 ">
+                    <label for="" class="text-lg">Confirm Password:</label>
+                    <input type="password" name="new_password_confirmation"  class="nes-input h-full rounded-md outline-none text-black md:text-[16px] text-[16px] bg-white">
+            </div>
+                <button class="px-10 py-3 rounded-md text-center border-none text-lg text-white shadow bg-green-600 hover:bg-green-700 max-w-[400px] mx-auto">UPDATE PASSWORD</button>
+         </form>
 </div>
-  <div>
-       <label for="lastname" class=" text-lg text-center text-white">Lastname:</label>
-       <input type="text" id="lastname"  readonly value="{{auth()->user()->userProfile->lastname}}"  name="lastname" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
-   </div>
-   <div>
-       <label for="studNumber" class=" text-lg text-center text-white">Student Number:</label>
-       <input type="text" id="studNumber"  readonly value="{{auth()->user()->userProfile->student_number}}"  name="studNumber" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
-  </div>
-  <div>
-       <label for="year" class=" text-lg text-center text-white">Section:</label>
-       <input type="text" id="year"  readonly value="{{auth()->user()->userProfile->year}}" name="year" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
+   
        
-  </div>
-   <div>
-       <label for="Username" class=" text-lg text-center text-white">Username:</label>
-       <input type="text" id="Username" readonly  value="{{auth()->user()->username}}" name="Username" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
-  </div>
-  <div class="md:col-span-2 md:max-w-[700px] md:mx-auto">
-       <label for="email" class=" text-lg text-center text-white">Email:</label>
-       <input type="email" id="email" name="email" readonly  value="{{auth()->user()->userProfile->email}}"class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white ">
- </div>
- <div class="flex justify-center items-center gap-8 pt-7 md:col-span-2 md:max-w-[700px] md:mx-auto md:px-10">
-    <a href="{{route('player.editProfile')}}" class="text-lg rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-3  hover:no-underline hover:text-white">
-        Edit Profile
-   </a >
-   <a href="{{route('player.editPassword')}}" class="text-lg rounded-lg outline-none text-white bg-slate-500 hover:bg-slate-600 p-3  hover:no-underline hover:text-white">Update Password</a>
- </div>
-</div>
+ 
+
 
 @if ($errors->any())
 @foreach ($errors->all() as $error)
@@ -158,5 +137,13 @@ document.getElementById('my_modal_39').showModal();
 </script>
 @endif
 
+
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('-translate-x-full');
+    }
+</script>
 
 @endsection

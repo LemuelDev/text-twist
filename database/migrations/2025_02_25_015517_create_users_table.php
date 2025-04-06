@@ -22,8 +22,8 @@ return new class extends Migration
         });
 
         DB::table('users')->insert([
-            "username" => '@Jlencina30',
-            "password" => Hash::make('@Jlencina30'),
+            "username" => '@Earllaguarez21',
+            "password" => Hash::make('@Earllaguarez21'),
             "userprofile_id" => '1',
         ]);
     }

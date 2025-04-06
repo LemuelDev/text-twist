@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,21 @@ Route::get('/signup', function () {
     return view('authentication/signup');
 })->name("signup");
 
+Route::get('password/reset', [PasswordResetController::class, 'showLinkRequestForm'])
+    ->name('password.request');
+
+// Handle sending the password reset link
+Route::post('password/email', [PasswordResetController::class, 'sendResetLinkEmail'])
+    ->name('password.email');
+
+// Show the form to reset the password
+Route::get('password/reset/{token}', [PasswordResetController::class, 'showResetForm'])
+    ->name('password.reset');
+
+// Handle the password reset form submission
+Route::post('password/reset/', [PasswordResetController::class, 'reset'])
+    ->name('password.update');
+
 
 Route::post('/signup/store', [AuthController::class,'store'])->name('users.store');
 
@@ -42,6 +58,14 @@ Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
 Route::get("/player/dashboard", [PlayerController::class, "dashboard"])->name("player.dashboard");
 
 Route::get("/player/profile", [PlayerController::class, "profile"])->name("player.profile");
+
+Route::get("/player/profile/edit", [PlayerController::class, "editProfile"])->name("player.editProfile");
+
+Route::post("/player/profile/update", [PlayerController::class, "updateProfile"])->name("player.updateProfile");
+
+Route::get('/player/profile/editPassword/', [PlayerController::class, 'editPassword'])->name('player.editPassword');
+
+Route::post('/player/profile/updatePassword/', [PlayerController::class, 'updatePassword'])->name('player.updatePassword');
 
 Route::get("/player/gameOver/{lvl}/{points}", [GameController::class, "gameOver"])->name('player.gameOver');
 
@@ -70,6 +94,13 @@ Route::get("/admin/track-user/{user}", [AdminController::class, "trackUser"])->n
 
 Route::get("/admin/profile", [AdminController::class, "profile"])->name("admin.profile");
 
+Route::get("/admin/profile/edit", [AdminController::class, "editProfile"])->name("admin.editProfile");
+
+Route::post("/admin/profile/update", [AdminController::class, "updateProfile"])->name("admin.updateProfile");
+
+Route::get('/admin/profile/editPassword/', [AdminController::class, 'editPassword'])->name('admin.editPassword');
+
+Route::post('/admin/profile/updatePassword/', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
 
 Route::get("/admin/questions", [AdminController::class, "questions"])->name("admin.questions");
 

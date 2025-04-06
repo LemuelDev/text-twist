@@ -30,12 +30,12 @@ return new class extends Migration
 
          // Insert default admin account
     DB::table('userprofiles')->insert([
-        'firstname' => 'John Lemuel ',
+        'firstname' => 'Earl',
         'middlename' => null,
-        'lastname' => 'Encina',
-        'fullname' => 'John Lemuel Encina',
+        'lastname' => 'Laguarez',
+        'fullname' => 'Earl Laguarez',
         'student_number' => '00000000',
-        'email' => 'johnlemuelencina30@gmail.com',
+        'email' => 'earllaguarez21@gmail.com',
         'year' => 'N/A',
         'lvl_cleared' => 'N/A',
         'highscore' => 'N/A',

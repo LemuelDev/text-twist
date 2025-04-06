@@ -93,7 +93,7 @@ class AuthController extends Controller
         ], [
             'password.regex' => 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
         ]);
-
+        
         if (Userprofile::where('email', $validated['email'])->exists() || User::where('username', $validated['username'])->exists()) {
             return redirect()->back()->with('failed', 'This user already has an account.');
         }
@@ -123,4 +123,7 @@ class AuthController extends Controller
         
         return redirect()->route("login")->with("success", "Signup Complete! Wait for the Approval of the Admin.");
     }
+
+
+
 }

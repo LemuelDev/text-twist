@@ -27,10 +27,13 @@
                             <button class="py-3 px-6 rounded-lg bg-blue-500 text-white">Search</button>
                         </form>
                         
-                     <select name="" id="filter-user" class="py-2 px-4 rounded-lg border border-white-500 text-black bg-transparent">
-                          <option value="{{route("admin.approveUsers")}}" {{request()->route()->getName() === "admin.approveUsers" ? 'selected' : ''}}>Approved</option>
-                          <option value="{{route("admin.pendingUsers")}}"  {{request()->route()->getName() === "admin.pendingUsers" ? 'selected' : ''}}>Pending</option>
-                     </select>
+                    <div>
+                        <label for="" class="text-sm">Sort by:</label>
+                        <select name="" id="filter-user" class="py-2 px-4 rounded-lg border border-white-500 text-black bg-transparent">
+                            <option value="{{route("admin.approveUsers")}}" {{request()->route()->getName() === "admin.approveUsers" ? 'selected' : ''}}>Approved</option>
+                            <option value="{{route("admin.pendingUsers")}}"  {{request()->route()->getName() === "admin.pendingUsers" ? 'selected' : ''}}>Pending</option>
+                        </select>
+                    </div>
                      <script>
                       // Get the select element
                       const filter = document.getElementById('filter-user');

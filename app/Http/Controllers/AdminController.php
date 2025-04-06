@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Userprofile;
 use App\Models\Word;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -80,6 +81,75 @@ class AdminController extends Controller
 
     public function profile() {
         return view ("admin.profile");
+    }
+
+    public function editProfile() {
+        return view ("admin.trackProfile");
+    }
+
+    public function updateProfile(){
+
+            $validation = request()->validate([
+                "username" => "required|string",
+                "email" => "required|string",
+            ]);
+
+            $user = User::where('id', auth()->user()->userProfile->id)->first();
+
+            $user->update([
+                "username" => $validation["username"]
+            ]);
+
+            $user->userProfile()->update([
+                "email" => $validation["email"]
+            ]);
+
+            return redirect()->route("admin.profile")->with("success" , "Profile updated successfully!");
+    }
+
+    public function editPassword() {
+        return view ("admin.trackPassword");
+    }
+
+    public function updatePassword() {
+        try {
+            
+            $validation = request()->validate([
+                "current_password" => "required|string",
+                "new_password" => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'regex:/[a-z]/', // must contain at least one lowercase letter
+                    'regex:/[A-Z]/', // must contain at least one uppercase letter
+                    'regex:/[0-9]/', // must contain at least one number
+                    'regex:/[@$!%*?&#]/',
+                    'confirmed'
+                ],
+                 // Optional field with validation for image file
+            ], [
+                'password.regex' => 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+                'email.unique' => 'The email address is already registered. Please use a different email address.' // Custom error message for unique email
+            ]);
+
+            $user = User::where('id', auth()->user()->id)->first();
+               // Check if the current password matches the user's stored password
+                if (!Hash::check($validation["current_password"], $user->password)) {
+                    return redirect()->back()
+                        ->with('failed', 'The current password does not match our records.');
+                };
+                
+                $user->update([
+                   "password" => Hash::make($validation["new_password"]), 
+                ]);
+
+            return redirect()->route("admin.profile")->with("success", "Password updated successfully");
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+            return redirect()->back()
+            ->withErrors($e->errors())
+            ->with('failed', 'Please fill out all required fields correctly.');
+        }
     }
 
     public function questions() {

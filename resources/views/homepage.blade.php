@@ -60,9 +60,7 @@
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
                 <p class="text-base leading-relaxed text-white">
-                    This project game is developed by Computer Science Students from President Ramon Magsaysay State University Sta.Cruz Campus for
-                    Thesis requirements in our 3rd year. This game is inspired to the original Text Twist game but this time it is Computer Programming Edition!.
-                    Are you ready? Then Let's Play!
+                    This project game is developed by Computer Science Students from President Ramon Magsaysay State University Sta. Cruz Campus for Thesis requirements. This game is inspired by GameHouse but this time it is Computer Programming Edition.!
                 </p>
             </div>
             <!-- Modal footer -->

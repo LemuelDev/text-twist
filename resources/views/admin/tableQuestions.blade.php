@@ -4,7 +4,7 @@
     <!-- head -->
     <thead>
       <tr>
-        <th class="text-lg text-center text-white ">Id</th>
+        <th class="text-lg text-center text-white ">Level Number</th>
         <th class="text-lg text-center text-white">Words to Solve</th>
         <th class="text-lg text-center text-white">Created At</th>
         <th class="text-lg text-center text-white">Action</th>

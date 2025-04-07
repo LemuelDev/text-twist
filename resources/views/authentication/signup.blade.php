@@ -48,7 +48,7 @@
               <div>
                     <label for="year" class=" text-lg text-center text-white">Section:</label>
                     <select name="year" id="year" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
-                        <option value="" disabled selected>Select Year</option>
+                        <option value="" disabled selected>Select Section</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>

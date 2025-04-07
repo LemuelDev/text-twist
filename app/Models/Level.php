@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Word extends Model
+class Level extends Model
 {
     use HasFactory;
+    protected $fillable = ['level_number', 'question'];
 
-    protected $fillable = ['level_id', 'word', 'meaning'];
-
-    public function level()
+    public function words()
     {
-        return $this->belongsTo(Level::class);
+        return $this->hasMany(Word::class);
     }
 }

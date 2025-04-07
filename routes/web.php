@@ -71,7 +71,7 @@ Route::get("/player/gameOver/{lvl}/{points}", [GameController::class, "gameOver"
 
 Route::get('/player/game', [GameController::class, 'game'])->name('player.newGame');
 
-Route::post('/player/next-level', [GameController::class, 'nextLevel'])->name('player.nextLevel');
+Route::get('/player/next-level/{id}', [GameController::class, 'nextLevel'])->name('player.nextLevel');
 
 
 
@@ -105,6 +105,10 @@ Route::post('/admin/profile/updatePassword/', [AdminController::class, 'updatePa
 Route::get("/admin/questions", [AdminController::class, "questions"])->name("admin.questions");
 
 Route::post("/admin/add-word", [AdminController::class, "addWord"])->name("admin.addWord");
+
+Route::get("/admin/add-word/edit/{id}", [AdminController::class, "editWord"])->name("admin.editWord");
+
+Route::post("/admin/add-word/update/{id}", [AdminController::class, "updateWord"])->name("admin.updateWord");
 
 Route::post("/admin/delete-word/{word}", [AdminController::class, "deleteWord"])->name("admin.deleteWord");
 

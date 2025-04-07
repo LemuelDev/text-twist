@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('words', function (Blueprint $table) {
             $table->id();
-            $table->string('words');
+            $table->foreignId('level_id')->constrained('levels')->onDelete('cascade');
+            $table->string('word');
+            $table->text('meaning');
             $table->timestamps();
         });
     }

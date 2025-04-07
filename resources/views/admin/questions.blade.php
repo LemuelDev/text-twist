@@ -21,17 +21,24 @@
                     <button class="btn" onclick="my_modal_4.showModal()">Add Word</button>
                     <dialog id="my_modal_4" class="modal">
                       <div class="modal-box">
-                          <h3 class="text-lg font-bold">Add a New Word</h3>
-                          <p class="py-2">Enter a new word for players to solve.</p>
+                          <h3 class="text-xl font-bold text-center">Add a New Word</h3>
+                          <p class="py-2 text-center">Enter a new word for players to solve.</p>
                   
                           <!-- Word Submission Form -->
-                          <form action="{{route("admin.addWord")}}" method="POST">
+                          <form action="{{route("admin.addWord")}}" method="POST" class="pt-4">
                               @csrf
-                              <div class="form-control">
-                                  <label class="label">
-                                      <span class="label-text">New Word</span>
-                                  </label>
-                                  <input type="text" name="word" placeholder="Enter word" class="input input-bordered w-full" required />
+                             <div class="w-full flex justify-center items-center gap-4">
+                              <label for="" class="text-lg">Level:</label>
+                              <input type="text" name="level_number" value="{{$nextLevelNumber}}" readonly class="bg-transparent rounded-md border-2 border-slate-200 py-2 text-md font-bold text-center max-w-[90px]">
+                              <input type="text" name="question" placeholder="Question" required class="bg-transparent rounded-md border-2 border-slate-200 py-2 text-lg w-full">
+                             </div>
+
+                              <h4 class="text-center text-lg py-2">Words & Meanings</h4>
+                              <div class="grid grid-cols-2 gap-2">
+                                @for ($i = 0; $i < 3; $i++)
+                                  <input type="text" name="words[]" placeholder="Word {{ $i+1 }}" required class="bg-transparent rounded-md border-2 border-slate-200 py-2 text-lg mt-2 ">
+                                  <input type="text" name="meanings[]" placeholder="Meaning {{ $i+1 }}" required class="bg-transparent rounded-md border-2 border-slate-200 py-2 text-lg mt-2 ">
+                              @endfor
                               </div>
                   
                               <!-- Submit and Close Buttons -->

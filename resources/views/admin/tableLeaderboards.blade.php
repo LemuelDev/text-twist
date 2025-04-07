@@ -7,7 +7,7 @@
         <th class="text-lg text-center text-white ">Name</th>
         <th class="text-lg text-center text-white">Username</th>
         <th class="text-lg text-center text-white">Student Number</th>
-        <th class="text-lg  text-center text-white">Year</th>
+        <th class="text-lg  text-center text-white">Section</th>
         <th class="text-lg text-center text-white">Highscore</th>
       
       </tr>

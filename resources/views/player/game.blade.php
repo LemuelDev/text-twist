@@ -41,6 +41,8 @@
 
             <div id="timer" class="text-lg font-bold mb-4">Time: 60</div>
 
+            <p class="py-2 text-sm font-bold text-white" id="question"></p>
+
             <!-- Answer Boxes for 3 Words -->
             <div id="answer-boxes" class="space-y-4 mb-4"></div>
 
@@ -56,57 +58,42 @@
             <!-- Result Message -->
             <div id="result" class="mt-4 font-bold text-lg"></div>
             {{-- <a href="{{route('player.nextLevel')}}" id="nextLevel" class="py-4 px-8 rounded-lg outline-none text-white bg-green text-lg hidden">Next Level</a> --}}
+            <!-- Initially hidden Container for solved words and meanings -->
+            <div id="solved-words-container" class="mt-4">
+                <h3 class="text-sm text-center">Solved Words</h3>
+                <ul id="solved-words-list" class="text-sm text-center"></ul>
+            </div>
+
         </div>
     </div>
 
-    <dialog id="my_modal_40" class="modal">
-        <div class="modal-box">
-        <h3 class="text-xl font-bold">Success!</h3>
-        <p class="py-4 pt-8 text-center text-green-600 text-xl">🎉 You solved all words!</p>
-        <p class="py-4 text-center text-white text-lg">Proceed to next level.</p>
-        <div class="modal-action">
-            <form method="dialog">
-            <!-- if there is a button in form, it will close the modal -->
-            <button class="btn">Proceed</button>
-            </form>
-        </div>
-        </div>
-    </dialog>
-
-    <dialog id="my_modal_39" class="modal">
-        <div class="modal-box">
-        <h3 class="text-xl font-bold text-red-600">Game Over!</h3>
-        <p class="py-4 pt-8 text-center text-red-600 text-2xl">⏳ Time's up!</p>
-        <p class="py-4 text-center text-white text-sm" id="hgh_lvl"></p>
-        <p class="py-4 text-center text-white text-sm" id="hgh_pts"></p>
-        <div class="modal-action">
-            <a id="gameOver" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
-        </div>
-        </div>
-    </dialog>
-    
-       
-    
-     
 
     <script>
         // Example words (3 words to solve)
         let highestLevel = parseInt(@json($lvl_cleared));
         let  highScore = parseInt(@json($highscore));
         let lvl = 1;
+        let id = lvl;
         let points = 0;
-        let words = @json($words) || [];
+        let words = @json($shuffledWords); // This is the array of objects [{jumbled: "..."}, ...]
         let selectedLetters = [];
         let solvedWords = [false, false, false]; // Track solved words
         let jumbledLetters = shuffleWord(words.join("")); // Combine all letters and shuffle
-        
-       
-
+        let wordsMeaning = @json($wordMeanings); 
+        let timerPaused = false;  // To track if the timer is paused
         // Function to display answer boxes and letters
+        let firstQuestion = @json($question);
+        let question;
         function setupGame() {
             document.getElementById('current_lvl').innerHTML = `LEVEL: ${lvl}`;
+            document.getElementById("question").innerHTML = typeof question === 'undefined' ? firstQuestion : question;
             let answerBoxContainer = document.getElementById("answer-boxes");
             answerBoxContainer.innerHTML = "";
+
+           console.log(words);
+           console.log(wordsMeaning);
+            console.log(question);
+            
 
             // Create answer boxes for 3 words
             words.forEach((word, wordIndex) => {
@@ -180,23 +167,39 @@
         
         function nextLevel() {
             console.log("Next Words Triggered");
-            fetch('/player/next-level', {
-                method: 'POST',
+            fetch(`/player/next-level/${id}`, {
+                method: 'GET',  // Change POST to GET
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                words = data.words; // Update words array with new words
-                lvl++;
+                console.log(data);  // Debug: Log response data to check if it's coming as expected
+                question = data.question;
+                wordsMeaning = data.wordMeanings
+                words = data.shuffledWords; // Update words array with new words
+                lvl = data.nextLevel;
+                id = data.nextLevel; // Update level
                 solvedWords = [false, false, false]; // Reset solved words tracker
                 selectedLetters = []; // Clear selected letters
                 jumbledLetters = shuffleWord(words.join("")); // Shuffle new words
                 setupGame(); // Reload UI with new words
+            })
+            .catch(error => {
+                console.error("Error fetching next level:", error);
             });
+
+            document.getElementById('solved-words-list').innerHTML = "";
+            startTimer();  // Restart the timer for the next level
         }
+
 
         // Submit and check word
         function submitWord() {
@@ -213,13 +216,23 @@
                 document.getElementById("result").innerText = `✅ Correct! Word ${currentWordIndex + 1} solved!`;
                 points += 100;
                 document.getElementById("current_points").innerHTML = `POINTS: ${points} `
-                lockAnswerBoxes(currentWordIndex);
+
+                 lockAnswerBoxes(currentWordIndex);          
                 disableLetterButtons();
+
+                 // Show the solved word and its meaning at the bottom
+                    
+                 displaySolvedWord(currentWordIndex);
+
                 if (solvedWords.every(Boolean)) {
+
+                    pauseTimer();
+
                     document.getElementById('my_modal_40').showModal();
                     document.getElementById("result").innerText = ``;
                     timeLeft += 30;
-                    setTimeout(nextLevel, 2000);
+                    lvl++;
+                    
                     
                 }
             } else {
@@ -233,6 +246,29 @@
                 btn.classList.remove("opacity-50");
             });
         }
+
+        function displaySolvedWord(index) {
+            // Get the word and meaning from the 'wordsMeaning' array using the index
+            let solvedWord = wordsMeaning[index].word;
+            let wordMeaning = wordsMeaning[index].meaning;
+
+            // Create a new list item for the solved word and meaning
+            let listItem = document.createElement('li');
+            listItem.innerHTML = `<strong>${solvedWord}</strong>: ${wordMeaning}`;
+
+            // Append the list item to the solved words container
+            document.getElementById('solved-words-list').appendChild(listItem);
+        }
+
+      // Function to pause the timer
+        function pauseTimer() {
+            clearInterval(timer);  // Stop the current timer
+        }
+
+
+
+
+
         function disableLetterButtons() {
         document.querySelectorAll("#letter-box button").forEach(btn => {
             btn.disabled = true;
@@ -309,6 +345,32 @@
         // Initialize game
         setupGame();
     </script>
+
+<dialog id="my_modal_40" class="modal">
+    <div class="modal-box">
+    <h3 class="text-xl font-bold">Success!</h3>
+    <p class="py-4 pt-8 text-center text-green-600 text-xl">🎉 You solved all words!</p>
+    <p class="py-4 text-center text-white text-lg">Proceed to next level.</p>
+    <div class="modal-action">
+        <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn" onclick="nextLevel()">Proceed</button>
+        </form>
+    </div>
+    </div>
+</dialog>
+
+<dialog id="my_modal_39" class="modal">
+    <div class="modal-box">
+    <h3 class="text-xl font-bold text-red-600">Game Over!</h3>
+    <p class="py-4 pt-8 text-center text-red-600 text-2xl">⏳ Time's up!</p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_lvl"></p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_pts"></p>
+    <div class="modal-action">
+        <a id="gameOver" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
+    </div>
+    </div>
+</dialog>
 
 
 @endsection

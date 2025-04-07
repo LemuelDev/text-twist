@@ -6,7 +6,7 @@
       <tr>
         <th class="text-lg text-center text-white ">Level Number</th>
         <th class="text-lg text-center text-white">Words to Solve</th>
-        <th class="text-lg text-center text-white">Created At</th>
+        <th class="text-lg text-center text-white">Meaning</th>
         <th class="text-lg text-center text-white">Action</th>
       </tr>
     </thead>
@@ -14,12 +14,13 @@
       <!-- row 1 -->
      @forelse ($words as $word)
      <tr>
-        <td class="max-lg:min-w-[200px] min-w-[400px] text-center text-md">{{$word->id}}</td>
-        <td class="min-w-[500px] text-center text-md">{{$word->words}} 🤔</td>
-        <td class="min-w-[250px] text-center text-md">{{ $word->created_at->format('F j, Y') }}</td>
-        <td>
+        <td class="max-lg:min-w-[100px] min-w-[100px] text-center text-md">{{$word->level->level_number}}</td>
+        <td class="min-w-[350px] text-center text-md">{{$word->word}} 🤔</td>
+        <td class="min-w-[500px] text-center text-md">{{ $word->meaning}}</td>
+        <td class="text-center text-md flex justify-center items-center gap-2">
+          <a href="{{route('admin.editWord', $word->level->id)}}" class="btn btn-success">Edit</a>
           <button class="btn btn-error" onclick="document.getElementById('delete_modal_{{$word->id}}').showModal()">Delete</button>
-
+          
           <!-- Unique Modal for Each Word -->
           <dialog id="delete_modal_{{$word->id}}" class="modal">
               <div class="modal-box">

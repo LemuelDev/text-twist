@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Level;
 use App\Models\User;
 use App\Models\Userprofile;
 use App\Models\Word;
@@ -154,10 +155,11 @@ class AdminController extends Controller
 
     public function questions() {
 
-        $words = Word::orderBy('id', 'asc')
-        ->paginate(6);
+        $nextLevelNumber = (Level::max('level_number') ?? 0) + 1;
 
-        return view ("admin.questions", compact('words'));
+        $words = Word::paginate(4);
+
+        return view ("admin.questions", compact('nextLevelNumber', 'words'));
     }
 
     public function deleteWord(Word $word){
@@ -166,21 +168,73 @@ class AdminController extends Controller
         return redirect()->route("admin.questions")->with("success", "Word deleted successfully!");
     }
 
-    public function addWord() {
-        $validated = request()->validate([
-            "word" => "required|string"
+    public function addWord(Request $request) {
+        $request->validate([
+            'level_number' => 'required|unique:levels',
+            'question' => 'required',
+            'words' => 'required|array|size:3',
+            'meanings' => 'required|array|size:3',
         ]);
-
-        $uppercaseWord = strtoupper($validated["word"]);
-
-        if (Word::where('words', $uppercaseWord)->exists()) {
-            return redirect()->back()->with('failed', 'This word already exists!');
+    
+        $level = Level::create([
+            'level_number' => $request->level_number,
+            'question' => $request->question,
+        ]);
+    
+        foreach ($request->words as $index => $word) {
+            Word::create([
+                'level_id' => $level->id,
+                'word' => strtolower($word),
+                'meaning' => $request->meanings[$index],
+            ]);
         }
-
-        Word::create([
-            "words" => $uppercaseWord
-        ]);
 
         return redirect()->route("admin.questions")->with("success", "Word added successfully!");
     }
+
+    public function editWord($id)
+{
+    
+    $level = Level::with('words')->findOrFail($id);
+    return view('admin.trackQuestions', compact('level'));
+}
+
+
+public function updateWord(Request $request, $id)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'question' => 'required|string',
+        'words.*.word' => 'required|string',
+        'words.*.meaning' => 'required|string',
+    ]);
+
+    // Find the level to update
+    $level = Level::findOrFail($id);
+    $level->question = $request->question;
+    $level->save(); // Save the updated question
+
+    // Loop through the words submitted by the user
+    foreach ($request->words as $wordData) {
+        if (isset($wordData['id'])) {
+            // Update existing word if 'id' exists
+            Word::where('id', $wordData['id'])->update([
+                'word' => $wordData['word'],
+                'meaning' => $wordData['meaning'],
+            ]);
+        } else {
+            // Add new word if 'id' does not exist
+            Word::create([
+                'level_id' => $level->id, // Assuming you have a relationship between level and word
+                'word' => $wordData['word'],
+                'meaning' => $wordData['meaning'],
+            ]);
+        }
+    }
+
+    // Redirect back with a success message
+    return redirect()->route('admin.questions')->with('success', 'Level updated successfully.');
+}
+
+
 }

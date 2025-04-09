@@ -49,10 +49,10 @@
                     <label for="year" class=" text-lg text-center text-white">Section:</label>
                     <select name="year" id="year" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
                         <option value="" disabled selected>Select Section</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
+                        <option value="1">1-A</option>
+                        <option value="2">1-B</option>
+                        <option value="3">1-C</option>
+                        <option value="4">1-D</option>
                     </select>
               </div>
                 <div>

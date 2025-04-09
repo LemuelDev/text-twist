@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ApproveEmail;
+use App\Mail\DeactivateEmail;
 use App\Models\Level;
 use App\Models\User;
 use App\Models\Userprofile;
 use App\Models\Word;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -31,6 +34,10 @@ class AdminController extends Controller
       
         $id->isPending = "approved";
         $id->update();
+
+        $message = "Your account is finally approved. You can now login and play the game!";
+        Mail::to($id->email)->send(new ApproveEmail($message));
+
         return redirect()->route("admin.pendingUsers")->with("success", "User status updated successfully.");
       
     }
@@ -38,6 +45,10 @@ class AdminController extends Controller
     public function pending(Userprofile $id) {
         $id->isPending = "pending";
         $id->update();
+
+        
+        $message = "Your account is deactivated for a while. We will update you once it is approved again. Thank you!";
+        Mail::to($id->email)->send(new DeactivateEmail($message));
 
         return redirect()->route("admin.approveUsers")->with("success", "User status updated successfully.");
     }

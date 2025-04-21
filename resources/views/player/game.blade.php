@@ -64,13 +64,14 @@
                 <div class="modal-box">
                 <h3 class="text-xl font-bold">Correct!</h3>
                 <div id="solved-words-container" class="mt-4">
+                    <p class="py-4 pt-8 text-center text-green-600 text-xl hidden" id="txtSolve" >🎉 You solved all words!</p>
                     <h3 class="text-sm text-center">Solved Words</h3>
                     <ul id="solved-words-list" class="text-sm text-center pt-2"></ul>
                 </div>
                 <div class="modal-action">
                     <form method="dialog">
                     <!-- if there is a button in form, it will close the modal -->
-                    <button class="btn">Close</button>
+                    <button class="btn" id="nextBtn">Close</button>
                     </form>
                 </div>
             </dialog>
@@ -78,7 +79,7 @@
     </div>
 
     
-    <dialog id="my_modal_40" class="modal">
+    {{-- <dialog id="my_modal_40" class="modal">
         <div class="modal-box">
         <h3 class="text-xl font-bold">Success!</h3>
         <p class="py-4 pt-8 text-center text-green-600 text-xl">🎉 You solved all words!</p>
@@ -90,7 +91,7 @@
             </form>
         </div>
         </div>
-    </dialog>
+    </dialog> --}}
 
     <script>
         // Example words (3 words to solve)
@@ -221,6 +222,11 @@
             });
 
             document.getElementById('solved-words-list').innerHTML = "";
+            let nextBtn = document.getElementById("nextBtn");
+                    nextBtn.innerHTML = 'Close';
+                    nextBtn.onclick =  null; // Corrected line
+                    let txtSolve = document.getElementById('txtSolve');
+                    txtSolve.classList.add('hidden'); // Corrected line
             startTimer();  // Restart the timer for the next level
         }
 
@@ -248,16 +254,17 @@
                     
                  displaySolvedWord(currentWordIndex);
                  document.getElementById('my_modal_41').showModal();
-                if (solvedWords.every(Boolean)) {
-
+                 if (solvedWords.every(Boolean)) {
+                    let nextBtn = document.getElementById("nextBtn");
+                    nextBtn.innerHTML = 'Proceed';
+                    nextBtn.onclick = nextLevel; // Corrected line
+                    let txtSolve = document.getElementById('txtSolve');
+                    txtSolve.classList.remove('hidden'); // Corrected line
                     pauseTimer();
-                    document.getElementById('my_modal_41').close();
-                    document.getElementById('my_modal_40').showModal();
+                    document.getElementById('my_modal_41').showModal();
                     document.getElementById("result").innerText = ``;
                     timeLeft += 30;
                     lvl++;
-                    
-                    
                 }
             } else {
                 document.getElementById("result").innerText = "❌ Incorrect! Try again.";

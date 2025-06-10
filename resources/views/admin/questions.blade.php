@@ -18,7 +18,7 @@
                 <!-- Your main content goes here -->
                 <div class="flex max-sm:flex-col justify-center max-sm:gap-5 sm:justify-between items-center">
                     <h1 class="lg:text-3xl text-2xl font-bold ">Questions 🤔</h1>
-                    <button class="btn" onclick="my_modal_4.showModal()">Add Word</button>
+                    <button class="btn btn-secondary text-white" onclick="my_modal_4.showModal()">Add Word</button>
                     <dialog id="my_modal_4" class="modal">
                       <div class="modal-box">
                           <h3 class="text-xl font-bold text-center">Add a New Word</h3>
@@ -66,7 +66,7 @@
 <dialog id="my_modal_40" class="modal">
     <div class="modal-box">
       <h3 class="text-xl font-bold">Success!</h3>
-      <p class="py-4 pt-8 text-center text-green-600">{{session('success')}}</p>
+      <p class="py-4 pt-8 text-center">{{session('success')}}</p>
       <div class="modal-action">
         <form method="dialog">
           <!-- if there is a button in form, it will close the modal -->
@@ -90,7 +90,7 @@
 <dialog id="my_modal_39" class="modal">
   <div class="modal-box">
     <h3 class="text-xl font-bold">Failed!</h3>
-    <p class="py-4 pt-8 text-center text-red-600">{{session('failed')}}</p>
+    <p class="py-4 pt-8 text-center">{{session('failed')}}</p>
     <div class="modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->

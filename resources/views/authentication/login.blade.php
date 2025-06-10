@@ -14,15 +14,9 @@
     <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
 
 </head>
-<body>
+<body class="min-h-screen bg-[#1B56FD] text-white">
     
-    <div class="scanlines"></div>
-
-    <div class="intro-wrap">
-        <div class="noise"></div>
-        <div class="noise noise-moving"></div>
-        <div class="play text-lg max-md:text-center" data-splitting>Text Twist Game <br> Computer Programming Edition!</div>
-        
+     
         {{-- content --}}
        <div class="pt-40">
           <form action="{{route("user.login")}}" method="POST" class="flex justify-center items-center flex-col gap-4 rounded-md outline-none  max-w-[500px] mx-auto shadow-xl p-8 px-8">
@@ -39,21 +33,21 @@
             <button type="submit" class="text-xl rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-4 hover:no-underline hover:text-white">
                   Login
             </button>
-            <a href="{{ route('password.request') }}" class="text-fuchsia-900 text-center text-sm hover:underline block">Forgot Password?</a>
-            <p class="text-center text-sm py-3">Don't have an account yet? <a href="{{route("signup")}}" class=" hover:underline text-fuchsia-900 hover:text-fuchsia-900 hover:cale-50">Signup Here</a></p>
+            <a href="{{ route('password.request') }}" class="text-yellow-300 hover:text-yellow-400 text-center text-sm hover:no-underline  block">Forgot Password?</a>
+            <p class="text-center text-sm py-3 text-white">Don't have an account yet? <a href="{{route("signup")}}" class=" text-yellow-300 hover:text-yellow-400 hover:no-underline  ">Signup Here</a></p>
           </form>
        </div>
 
 
-    </div>
+
 
 
     @if ($errors->any())
     @foreach ($errors->all() as $error)
     <dialog id="my_modal_39" class="modal">
         <div class="modal-box">
-          <h3 class="text-xl font-bold">Failed!</h3>
-          <p class="py-4 pt-8 text-center text-red-600">{{$error}}</p>
+          <h3 class="text-xl font-bold text-white">Failed!</h3>
+          <p class="py-4 pt-8 text-center text-white">{{$error}}</p>
           <div class="modal-action">
             <form method="dialog">
               <!-- if there is a button in form, it will close the modal -->
@@ -77,8 +71,8 @@
     @if (session()->has('success'))
     <dialog id="my_modal_40" class="modal">
     <div class="modal-box">
-    <h3 class="text-xl font-bold">Success!</h3>
-    <p class="py-4 pt-8 text-center text-green-600">{{session('success')}}</p>
+    <h3 class="text-xl font-bold text-white">Success!</h3>
+    <p class="py-4 pt-8 text-center text-white">{{session('success')}}</p>
     <div class="modal-action">
         <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
@@ -101,8 +95,8 @@
     @if (session()->has('failed'))
     <dialog id="my_modal_39" class="modal">
     <div class="modal-box">
-    <h3 class="text-xl font-bold">Failed!</h3>
-    <p class="py-4 pt-8 text-center text-red-600">{{session('failed')}}</p>
+    <h3 class="text-xl font-bold text-white">Failed!</h3>
+    <p class="py-4 pt-8 text-center text-white">{{session('failed')}}</p>
     <div class="modal-action">
     <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->

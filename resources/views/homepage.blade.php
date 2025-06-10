@@ -6,23 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Text Twist Game</title>
     @vite('resources/css/app.css')
-    @vite('resources/scss/bg.scss')
+    {{-- @vite('resources/scss/bg.scss') --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
    
 </head>
-<body>
+<body class="min-h-screen bg-[#1B56FD]">
 
-    <div class="scanlines"></div>
-    <div class="intro-wrap">
-        <div class="noise"></div>
-        <div class="noise noise-moving"></div>
-        {{-- <div class="play text-xl z-40" data-splitting>Welcome!</div> --}}
-
-
-        {{-- content --}}
+     {{-- content --}}
         <div class="flex justify-center items-center flex-col  rounded-md outline-none pt-40">
             <h4>Text Twist Game</h4>
             <p class="text-xl pt-4 text-yellow-200">Computer Programming Edition!</p>
@@ -36,9 +29,7 @@
             </button>
         </div>
 
-        
-
-<!-- Modal toggle -->
+        <!-- Modal toggle -->
 
 <!-- Main modal -->
 <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -101,11 +92,6 @@
         closeModalBtn.addEventListener("click", hideModal);
     });
 </script>
-
-
-
-
-    </div>
     
 </body>
 </html>

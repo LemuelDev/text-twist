@@ -1,6 +1,6 @@
 @if (count($words) > 0)
 <div class="overflow-x-auto mt-4">
-  <table class="table table-zebra w-auto">
+  <table class="table w-auto">
     <!-- head -->
     <thead>
       <tr>
@@ -18,8 +18,8 @@
         <td class="min-w-[350px] text-center text-md">{{$word->word}} 🤔</td>
         <td class="min-w-[500px] text-center text-md">{{ $word->meaning}}</td>
         <td class="text-center text-md flex justify-center items-center gap-2">
-          <a href="{{route('admin.editWord', $word->level->id)}}" class="btn btn-success">Edit</a>
-          <button class="btn btn-error" onclick="document.getElementById('delete_modal_{{$word->id}}').showModal()">Delete</button>
+          <a href="{{route('admin.editWord', $word->level->id)}}" class="btn btn-secondary text-white">Edit</a>
+          <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="document.getElementById('delete_modal_{{$word->id}}').showModal()">Delete</button>
           
           <!-- Unique Modal for Each Word -->
           <dialog id="delete_modal_{{$word->id}}" class="modal">
@@ -31,7 +31,7 @@
                   <form action="{{ route('admin.deleteWord', $word->id) }}" method="POST">
                       @csrf
                       <div class="modal-action">
-                          <button type="submit" class="btn btn-error">Delete</button>
+                          <button type="submit" class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800">Delete</button>
                           <button type="button" class="btn" onclick="document.getElementById('delete_modal_{{$word->id}}').close()">Close</button>
                       </div>
                   </form>
@@ -48,7 +48,7 @@
     </tbody>
   </table>
 </div>
-<div class="mt-4 flex flex-row justify-end items-center gap-4 px-4 ">
+<div class="mt-4 flex flex-row justify-end items-center gap-4 px-4 text-white ">
   {{ $words->links() }}
 </div>
 @else

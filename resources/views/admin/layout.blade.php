@@ -18,7 +18,7 @@
     </style>
 
 </head>
-<body class="bg-[background: #2b52ff;]  h-auto">
+<body class="bg-[#2b52ff] h-auto text-white">
         
         @yield('content')
 

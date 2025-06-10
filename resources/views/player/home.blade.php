@@ -4,12 +4,12 @@
   {{-- content --}}
     <nav class="flex gap-6 justify-end pr-4 items-center pt-6 pb-4">
 
-        <a href="{{route('player.profile')}}" class="text-lg text-black rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-700 px-6 py-3 hover:text-white">
+        <a href="{{route('player.profile')}}" class="text-lg text-white hover:text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-600 px-6 py-3 ">
             Profile
         </a>
 
         <div class="flex justify-end gap-4 items-center">
-            <button class="btn btn-error" onclick="my_modal_1.showModal()">Logout</button>
+            <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="my_modal_1.showModal()">Logout</button>
             {{-- modal --}}
        
                 <dialog id="my_modal_1" class="modal">
@@ -19,7 +19,7 @@
                     <div class="modal-action">
                       <form action="{{route("logout")}}" method="POST">
                         @csrf
-                        <button class="btn btn-error">Logout</button>
+                        <button class="rounded-md px-8 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800">Logout</button>
                       </form>
                       <form method="dialog">
                         <!-- if there is a button in form, it will close the modal -->

@@ -26,9 +26,9 @@
       <td class="min-w-[200px] text-center">{{$user->isPending}}</td>
       <td class="min-w-[200px] text-center">
         <div class="flex items-center justify-center gap-2">
-          <a href="{{route('admin.trackUser', $user->id)}}" class="text-white rounded-md px-4 py-3 bg-green-500 hover:bg-green-600 text-center whitespace-nowrap">View</a>
+          <a href="{{route('admin.trackUser', $user->id)}}" class="btn btn-secondary text-white">View</a>
           
-          <button class="btn btn-error" onclick="document.getElementById('delete_modal_{{$user->id}}').showModal()">Delete</button>
+          <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="document.getElementById('delete_modal_{{$user->id}}').showModal()">Delete</button>
 
           <!-- Unique Modal for Each user -->
           <dialog id="delete_modal_{{$user->id}}" class="modal">
@@ -40,7 +40,7 @@
                   <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST">
                       @csrf
                       <div class="modal-action">
-                          <button type="submit" class="btn btn-error">Delete</button>
+                          <button type="submit" class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800">Delete</button>
                           <button type="button" class="btn" onclick="document.getElementById('delete_modal_{{$user->id}}').close()">Close</button>
                       </div>
                   </form>

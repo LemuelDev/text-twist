@@ -62,12 +62,12 @@
 
                 <div class="mx-auto px-4 w-full max-[520px]:max-w-[600px]  max-sm:flex-col flex gap-4 items-center justify-center py-8">
                     @if ($user->isPending == "approved")
-                     <a href="{{route('admin.pending', $user->id)}}" class="text-white rounded-md px-4 py-3 text-lg bg-green-500 hover:bg-green-600 text-center whitespace-nowrap">User to Pending</a>
+                     <a href="{{route('admin.pending', $user->id)}}" class="text-white rounded-md px-4 py-3 text-lg bg-purple-500 hover:bg-purple-600 text-center whitespace-nowrap">User to Pending</a>
                     @else
-                    <a href="{{route('admin.approved', $user->id)}}" class="text-white rounded-md px-4 py-3 text-lg bg-green-500 hover:bg-green-600 text-center whitespace-nowrap">User to Approved</a>
+                    <a href="{{route('admin.approved', $user->id)}}" class="text-white rounded-md px-4 py-3 text-lg bg-purple-500 hover:bg-purple-600 text-center whitespace-nowrap">User to Approved</a>
                  
                     @endif
-                    <button class="delete-btn text-white py-3 px-6 bg-red-500 hover:bg-red-600 rounded-md"
+                    <button class="delete-btn text-white py-3 px-6 bg-red-700 hover:bg-red-800 rounded-md"
                             data-file-id="{{$user->id}}"
                             data-toggle-modal="#deleteConfirmationModal">
                         DELETE
@@ -93,7 +93,7 @@
             <div class="modal-header flex justify-start items-center">
                 <h5 class="text-lg font-medium" id="deleteConfirmationModalLabel">User Deletion</h5>
             </div>
-            <div class="modal-body my-4 text-red-500">
+            <div class="modal-body my-4 ">
                 Are you sure you want to delete this user?
             </div>
             <div class="modal-footer flex justify-end gap-4">
@@ -101,7 +101,7 @@
                 <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="text-white py-2 px-6 bg-red-500 hover:bg-red-600 rounded-md">Delete</button>
+                    <button type="submit" class="text-white py-2 px-6 bg-red-700 hover:bg-red-800 rounded-md">Delete</button>
                 </form>
             </div>
         </div>

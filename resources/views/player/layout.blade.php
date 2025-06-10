@@ -14,19 +14,12 @@
     <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
+<body class="min-h-screen bg-[#1B56FD] text-white">
     
-    <div class="scanlines"></div>
+    @if (request()->route()->getName() == "player.dashboard" || request()->route()->getName() == "player.newGame" || request()->route()->getName() == "player.nextLevel")
+         <div class="play text-md max-md:text-center absolute top-5 left-5">Player:{{auth()->user()->userProfile->firstname}}</div>
+    @endif
 
-    <div class="intro-wrap">
-        <div class="noise"></div>
-        <div class="noise noise-moving"></div>
-        @if (request()->route()->getName() !== "player.profile")
-            <div class="play text-lg max-md:text-center" data-splitting>Player:{{auth()->user()->userProfile->firstname}}</div>
-        @endif
-       
-        @yield('content')
-
-    </div>
+     @yield('content')
 </body>
 </html>

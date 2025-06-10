@@ -22,9 +22,9 @@
                     <div class="flex items-center justify-center gap-4 max-sm:flex-col max-sm:pt-3">
                         <form action="{{ route(request()->route()->getName()) }}" method="GET">
                             <input type="text" placeholder="Search Name" name="search" 
-                                class="px-4 py-2 rounded-lg shadow-md border border-white bg-transparent outline-none"
+                                class="px-4 py-2 rounded-lg shadow-md border border-white bg-transparent outline-none placeholder:text-white"
                                 value="{{ request('search') }}">
-                            <button class="py-3 px-6 rounded-lg bg-blue-500 text-white">Search</button>
+                            <button class="py-3 px-6 rounded-lg bg-purple-600 text-white">Search</button>
                         </form>
                         
                     <div>
@@ -59,7 +59,7 @@
 <dialog id="my_modal_40" class="modal">
     <div class="modal-box">
       <h3 class="text-xl font-bold">Success!</h3>
-      <p class="py-4 pt-8 text-center text-green-600">{{session('success')}}</p>
+      <p class="py-4 pt-8 text-center">{{session('success')}}</p>
       <div class="modal-action">
         <form method="dialog">
           <!-- if there is a button in form, it will close the modal -->
@@ -83,7 +83,7 @@
 <dialog id="my_modal_39" class="modal">
   <div class="modal-box">
     <h3 class="text-xl font-bold">Failed!</h3>
-    <p class="py-4 pt-8 text-center text-red-600">{{session('failed')}}</p>
+    <p class="py-4 pt-8 text-center">{{session('failed')}}</p>
     <div class="modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->

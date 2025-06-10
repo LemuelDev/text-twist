@@ -8,18 +8,18 @@
     </div> --}}
     <p class="text-white text-lg px-4 pt-4">HIGHSCORE: {{$highscore}}</p>
    
-    <button class="btn btn-error" onclick="my_modal_10.showModal()">Quit</button>
+    <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="my_modal_10.showModal()">Quit</button>
     <dialog id="my_modal_10" class="modal">
     <div class="modal-box">
         <h3 class="text-lg font-bold">Confirm!</h3>
         <p class="py-4 text-lg">Are you sure you want to Quit?</p>
         <div class="modal-action">
-        <form method="dialog">
+        <form method="dialog grid gap-4">
             <!-- if there is a button in form, it will close the modal -->
-            <a href="{{route('player.dashboard')}}" class="btn btn-error hover:no-underline">
+            <a href="{{route('player.dashboard')}}" class="rounded-md text-center mr-2 hover:no-underline px-4 py-5 outline-none border-none hover:text-white text-white bg-red-700 hover:bg-red-800">
                 Quit
             </a>
-            <button class="btn">Close</button>
+            <button class="rounded-md text-center hover:no-underline px-4 py-4 outline-none border-none text-white bg-blue-600 hover:bg-blue-700">Close</button>
         </form>
         </div>
     </div>
@@ -51,8 +51,8 @@
 
             <!-- Controls -->
             <div class="mt-4">
-                <button onclick="clearAnswer()" class="bg-red-500 text-white px-4 py-2 rounded text-lg">Clear</button>
-                <button onclick="submitWord()" class="bg-blue-500 text-white px-4 py-2 rounded text-lg">Submit</button>
+                <button onclick="clearAnswer()" class="bg-red-700 text-white px-4 py-2 rounded text-lg">Clear</button>
+                <button onclick="submitWord()" class="bg-purple-500 text-white px-4 py-2 rounded text-lg">Submit</button>
             </div>
 
             <!-- Result Message -->
@@ -380,8 +380,8 @@
 
 <dialog id="my_modal_39" class="modal">
     <div class="modal-box">
-    <h3 class="text-xl font-bold text-red-600">Game Over!</h3>
-    <p class="py-4 pt-8 text-center text-red-600 text-2xl">⏳ Time's up!</p>
+    <h3 class="text-xl font-bold text-white">Game Over!</h3>
+    <p class="py-4 pt-8 text-center text-white text-2xl">⏳ Time's up!</p>
     <p class="py-4 text-center text-white text-sm" id="hgh_lvl"></p>
     <p class="py-4 text-center text-white text-sm" id="hgh_pts"></p>
     <div class="modal-action">

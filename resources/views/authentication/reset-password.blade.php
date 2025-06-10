@@ -7,22 +7,14 @@
     <title>Text Twist - Forgot Password</title>
 
     @vite('resources/css/app.css')
-    @vite('resources/scss/bg.scss')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
 
 </head>
-<body>
-    
-    <div class="scanlines"></div>
+<body class="min-h-screen bg-[#1B56FD] text-white">
 
-    <div class="intro-wrap">
-        <div class="noise"></div>
-        <div class="noise noise-moving"></div>
-        <div class="play text-lg max-md:text-center" data-splitting>Text Twist Game <br> Computer Programming Edition!</div>
-        
         {{-- content --}}
        <div class="pt-40">
         <form action="{{route('password.update')}}" method="post" class="flex justify-center items-center flex-col gap-4 rounded-md outline-none  max-w-[500px] mx-auto shadow-xl p-8 px-8">
@@ -37,15 +29,12 @@
             <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm password..." class="nes-input h-1/2 rounded-md outline-none text-black text-[16px] bg-white">
             <button type="submit" class="py-3  px-7 border-r-full border-none bg-green-500 text-white rounded-lg w-full text-lg">Update Password</button>
 
-            <p class="text-center text-sm py-2">Don't have an account yet? <a href="{{route("signup")}}" class=" hover:underline text-fuchsia-900 hover:text-fuchsia-900 hover:cale-50">Signup Here</a></p>
-          <p class="text-center md:col-span-2 md:max-w-[400px] md:mx-auto text-sm py-1">Already have an account? <a href="{{route("login")}}" class=" hover:underline text-fuchsia-900 hover:text-fuchsia-900 hover:cale-50">Login</a></p>
+            <p class="text-center text-sm py-2">Don't have an account yet? <a href="{{route("signup")}}" class=" hover:no-underline text-yellow-300 hover:text-yellow-400 hover:cale-50">Signup Here</a></p>
+          <p class="text-center md:col-span-2 md:max-w-[400px] md:mx-auto text-sm py-1">Already have an account? <a href="{{route("login")}}" class=" hover:no-underline text-yellow-300 hover:text-yellow-400 hover:cale-50">Login</a></p>
           
         </form>
        
        </div>
-
-
-    </div>
 
 
     @if ($errors->any())
@@ -53,7 +42,7 @@
     <dialog id="my_modal_39" class="modal">
         <div class="modal-box">
           <h3 class="text-xl font-bold">Failed!</h3>
-          <p class="py-4 pt-8 text-center text-red-600">{{$error}}</p>
+          <p class="py-4 pt-8 text-center">{{$error}}</p>
           <div class="modal-action">
             <form method="dialog">
               <!-- if there is a button in form, it will close the modal -->
@@ -78,7 +67,7 @@
     <dialog id="my_modal_40" class="modal">
     <div class="modal-box">
     <h3 class="text-xl font-bold">Success!</h3>
-    <p class="py-4 pt-8 text-center text-green-600">{{session('success')}}</p>
+    <p class="py-4 pt-8 text-center">{{session('success')}}</p>
     <div class="modal-action">
         <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
@@ -102,7 +91,7 @@
     <dialog id="my_modal_39" class="modal">
     <div class="modal-box">
     <h3 class="text-xl font-bold">Failed!</h3>
-    <p class="py-4 pt-8 text-center text-red-600">{{session('failed')}}</p>
+    <p class="py-4 pt-8 text-center">{{session('failed')}}</p>
     <div class="modal-action">
     <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->

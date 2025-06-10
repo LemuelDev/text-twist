@@ -56,7 +56,7 @@
 <dialog id="my_modal_39" class="modal">
     <div class="modal-box">
       <h3 class="text-xl font-bold">Failed!</h3>
-      <p class="py-4 pt-8 text-center text-red-600">{{$error}}</p>
+      <p class="py-4 pt-8 text-center">{{$error}}</p>
       <div class="modal-action">
         <form method="dialog">
           <!-- if there is a button in form, it will close the modal -->
@@ -81,7 +81,7 @@
 <dialog id="my_modal_40" class="modal">
 <div class="modal-box">
 <h3 class="text-xl font-bold">Success!</h3>
-<p class="py-4 pt-8 text-center text-green-600">{{session('success')}}</p>
+<p class="py-4 pt-8 text-center">{{session('success')}}</p>
 <div class="modal-action">
 <form method="dialog">
   <!-- if there is a button in form, it will close the modal -->
@@ -105,7 +105,7 @@ document.getElementById('my_modal_40').showModal();
 <dialog id="my_modal_39" class="modal">
 <div class="modal-box">
 <h3 class="text-xl font-bold">Failed!</h3>
-<p class="py-4 pt-8 text-center text-red-600">{{session('failed')}}</p>
+<p class="py-4 pt-8 text-center">{{session('failed')}}</p>
 <div class="modal-action">
 <form method="dialog">
 <!-- if there is a button in form, it will close the modal -->

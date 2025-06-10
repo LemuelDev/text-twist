@@ -30,12 +30,12 @@
                                     <!-- Question -->
                                     <div class="items-center flex justify-end gap-5">
                                         <label class="text-xl font-bold">Level Number:</label>
-                                        <input type="number" name="level_number" value="{{ $level->level_number }}" readonly class="bg-transparent rounded-md border-2 border-slate-400 py-2 max-w-[90px] text-center font-bold text-xl">
+                                        <input type="number" name="level_number" value="{{ $level->level_number }}" readonly class="bg-transparent rounded-md border-2 border-slate-300 px-2 py-2 max-w-[90px] text-center font-bold text-xl">
                                     </div>
                                     <div class="grid">
                                        
                                         <label>Question</label>
-                                        <input type="text" name="question" value="{{ $level->question }}" required class="bg-transparent rounded-md border-2 border-slate-400 py-2 text-lg w-full">
+                                        <input type="text" name="question" value="{{ $level->question }}" required class="bg-transparent rounded-md border-2 border-slate-300 px-2 py-2 text-lg w-full">
                                     </div>
                                    </div>
                                 
@@ -52,21 +52,21 @@
                                             @if ($i < $totalWords)
                                                 {{-- Existing word --}}
                                                <div class="grid gap-4 w-full grid-cols-2">
-                                                <input type="hidden" name="words[{{ $i }}][id]" value="{{ $words[$i]->id }}" class="bg-transparent rounded-md border-2 border-slate-400 py-2 text-lg w-full">
-                                                <input type="text" name="words[{{ $i }}][word]" value="{{ $words[$i]->word }}" required class="bg-transparent rounded-md border-2 border-slate-400 py-2 text-lg w-full shadow-xl">
-                                                <input type="text" name="words[{{ $i }}][meaning]" value="{{ $words[$i]->meaning }}" required class="bg-transparent rounded-md border-2 border-slate-400 py-2 text-lg w-full shadow-xl">
+                                                <input type="hidden" name="words[{{ $i }}][id]" value="{{ $words[$i]->id }}" class="bg-transparent rounded-md border-2 border-slate-300 px-2 py-2 text-lg w-full">
+                                                <input type="text" name="words[{{ $i }}][word]" value="{{ $words[$i]->word }}" required class="bg-transparent rounded-md border-2 border-slate-300 px-2 py-2 text-lg w-full shadow-xl">
+                                                <input type="text" name="words[{{ $i }}][meaning]" value="{{ $words[$i]->meaning }}" required class="bg-transparent rounded-md border-2 border-slate-300 px-2 py-2 text-lg w-full shadow-xl">
                                                </div>
                                             @else
                                                 {{-- Empty word input for missing entries --}}
                                                 <div class="grid gap-4 w-full grid-cols-2">
-                                                    <input type="text" name="words[{{ $i }}][word]" placeholder="Enter word" required class="bg-transparent rounded-md border-2 border-slate-400 py-2 text-lg w-full shadow-xl">
-                                                <input type="text" name="words[{{ $i }}][meaning]" placeholder="Enter meaning" required class="bg-transparent rounded-md border-2 border-slate-400 py-2 text-lg w-full shadow-xl">
+                                                    <input type="text" name="words[{{ $i }}][word]" placeholder="Enter word" required class="bg-transparent rounded-md border-2 border-slate-300 px-2 py-2 text-lg w-full shadow-xl">
+                                                <input type="text" name="words[{{ $i }}][meaning]" placeholder="Enter meaning" required class="bg-transparent rounded-md border-2 border-slate-300 px-2 py-2 text-lg w-full shadow-xl">
                                                 </div>
                                             @endif
                                         </div>
                                     @endfor
                                 
-                                    <button type="submit" class="btn btn-success max-w-[300px] mx-auto">Update Level</button>
+                                    <button type="submit" class="text-white rounded-md px-4 py-3 text-lg bg-purple-500 hover:bg-purple-600 text-center whitespace-nowrap max-w-[300px] mx-auto">Update Level</button>
                                 </form>
                                 
                             </div>
@@ -88,7 +88,7 @@
         <dialog id="my_modal_39" class="modal">
             <div class="modal-box">
             <h3 class="text-xl font-bold">Failed!</h3>
-            <p class="py-4 pt-8 text-center text-red-600">{{$error}}</p>
+            <p class="py-4 pt-8 text-center ">{{$error}}</p>
             <div class="modal-action">
                 <form method="dialog">
                 <!-- if there is a button in form, it will close the modal -->
@@ -113,7 +113,7 @@
         <dialog id="my_modal_40" class="modal">
         <div class="modal-box">
         <h3 class="text-xl font-bold">Success!</h3>
-        <p class="py-4 pt-8 text-center text-green-600">{{session('success')}}</p>
+        <p class="py-4 pt-8 text-center">{{session('success')}}</p>
         <div class="modal-action">
         <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
@@ -137,7 +137,7 @@
         <dialog id="my_modal_39" class="modal">
         <div class="modal-box">
         <h3 class="text-xl font-bold">Failed!</h3>
-        <p class="py-4 pt-8 text-center text-red-600">{{session('failed')}}</p>
+        <p class="py-4 pt-8 text-center ">{{session('failed')}}</p>
         <div class="modal-action">
         <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->

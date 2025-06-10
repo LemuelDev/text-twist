@@ -1,7 +1,6 @@
 <aside 
-    data-theme="aqua"
     id="sidebar" 
-    class="shadow-xl rounded-lg w-[17rem] transition-all duration-300 ease-in-out transform lg:translate-x-0 -translate-x-full lg:relative fixed h-full bottom-0 z-[1000]">
+    class="shadow-xl rounded-lg w-[17rem] bg-[#2442c6] transition-all duration-300 ease-in-out transform lg:translate-x-0 -translate-x-full lg:relative fixed h-full bottom-0 z-[1000]">
     <div class="flex flex-col h-full p-4">
         <div class="flex justify-end">
             <button 

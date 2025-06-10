@@ -12,7 +12,7 @@ export default {
     
   ],
   daisyui: {
-    themes: ["aqua", "light"], // Define DaisyUI themes here
+    themes: [ "aqua", "light"], // Define DaisyUI themes here
   },
   
 }

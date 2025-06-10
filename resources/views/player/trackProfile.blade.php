@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="play text-lg max-md:text-center" data-splitting>Player Profile</div>
+<div class="play text-md max-md:text-center absolute top-5 left-5">Player Profile</div>
         
 
 
@@ -10,12 +10,12 @@
     {{-- <div>
         <h4 class="text-lg"> </h4>
     </div> --}}
-    <a href="{{route('player.dashboard')}}" class="text-lg text-black rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-700 px-6 py-3 hover:text-white">
+    <a href="{{route('player.dashboard')}}" class="text-lg text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-700 px-6 py-3 hover:text-white">
         Dashboard
     </a>
 
     <div class="flex justify-end gap-4 items-center">
-        <button class="btn btn-error" onclick="my_modal_1.showModal()">Logout</button>
+        <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="my_modal_1.showModal()">Logout</button>
         {{-- modal --}}
    
             <dialog id="my_modal_1" class="modal">
@@ -25,7 +25,7 @@
                 <div class="modal-action">
                   <form action="{{route("logout")}}" method="POST">
                     @csrf
-                    <button class="btn btn-error">Logout</button>
+                    <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800">Logout</button>
                   </form>
                   <form method="dialog">
                     <!-- if there is a button in form, it will close the modal -->
@@ -89,7 +89,7 @@
 <dialog id="my_modal_39" class="modal">
     <div class="modal-box">
       <h3 class="text-xl font-bold">Failed!</h3>
-      <p class="py-4 pt-8 text-center text-red-600 text-sm">{{$error}}</p>
+      <p class="py-4 pt-8 text-center  text-sm">{{$error}}</p>
       <div class="modal-action">
         <form method="dialog">
           <!-- if there is a button in form, it will close the modal -->
@@ -114,7 +114,7 @@
 <dialog id="my_modal_40" class="modal">
 <div class="modal-box">
 <h3 class="text-xl font-bold">Success!</h3>
-<p class="py-4 pt-8 text-center text-green-600 text-sm">{{session('success')}}</p>
+<p class="py-4 pt-8 text-center text-sm">{{session('success')}}</p>
 <div class="modal-action">
 <form method="dialog">
   <!-- if there is a button in form, it will close the modal -->
@@ -138,7 +138,7 @@ document.getElementById('my_modal_40').showModal();
 <dialog id="my_modal_39" class="modal">
 <div class="modal-box">
 <h3 class="text-xl font-bold">Failed!</h3>
-<p class="py-4 pt-8 text-center text-red-600 text-sm">{{session('failed')}}</p>
+<p class="py-4 pt-8 text-center text-sm">{{session('failed')}}</p>
 <div class="modal-action">
 <form method="dialog">
 <!-- if there is a button in form, it will close the modal -->

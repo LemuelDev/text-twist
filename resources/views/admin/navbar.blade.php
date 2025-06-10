@@ -8,7 +8,7 @@
        </button>
 
        <div class="flex justify-end gap-4 items-center">
-        <button class="btn btn-error" onclick="my_modal_1.showModal()">Logout</button>
+        <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="my_modal_1.showModal()">Logout</button>
         {{-- modal --}}
    
             <dialog id="my_modal_1" class="modal">
@@ -18,7 +18,7 @@
                 <div class="modal-action">
                   <form action="{{route("logout")}}" method="POST">
                     @csrf
-                    <button class="btn btn-error">Logout</button>
+                    <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800">Logout</button>
                   </form>
                   <form method="dialog">
                     <!-- if there is a button in form, it will close the modal -->

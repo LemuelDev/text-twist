@@ -98,17 +98,30 @@
         let highestLevel = parseInt(@json($lvl_cleared));
         let  highScore = parseInt(@json($highscore));
         let lvl = 1;
+        let hgh_lvl = lvl;
         let id = lvl;
+        let mode = @json($mode);
         let points = 0;
         let words = @json($shuffledWords); // This is the array of objects [{jumbled: "..."}, ...]
         let selectedLetters = [];
-        let solvedWords = [false, false, false]; // Track solved words
+        let selectedButtonsHistory = [];
+        let solvedWords = Array(words.length).fill(false);
         let jumbledLetters = shuffleWord(words.join("")); // Combine all letters and shuffle
         let wordsMeaning = @json($wordMeanings); 
         let timerPaused = false;  // To track if the timer is paused
         // Function to display answer boxes and letters
         let firstQuestion = @json($question);
         let question;
+
+        function playSound(soundName) {
+            const audio = new Audio("{{ asset('sounds/') }}" + `/${soundName}.mp3`);
+            audio.play()
+                .catch(error => {
+                    console.warn(`Sound playback blocked for ${soundName}:`, error);
+                    // This often happens if autoplay is attempted without user interaction
+                });
+        }
+
         function setupGame() {
             document.getElementById('current_lvl').innerHTML = `LEVEL: ${lvl}`;
             document.getElementById("question").innerHTML = typeof question === 'undefined' ? firstQuestion : question;
@@ -154,9 +167,10 @@
         }
 
         // Handle selecting a letter
-        function selectLetter(letter, button) {
+        function selectLetter(letter, button) { // 'button' here is the HTML button element
             if (selectedLetters.length < getCurrentWord().length) {
-                selectedLetters.push(letter);
+                selectedLetters.push(letter); // Still pushing just the string
+                selectedButtonsHistory.push(button); // <--- ADD THIS LINE: Store the button reference
                 updateAnswerBoxes();
                 button.disabled = true;
                 button.classList.add("opacity-50");
@@ -181,18 +195,39 @@
         }
 
         // Clear selected answer
+        // function clearAnswer() {
+        //     selectedLetters = [];
+        //     document.querySelectorAll("#letter-box button").forEach(btn => {
+        //         btn.disabled = false;
+        //         btn.classList.remove("opacity-50");
+        //     });
+        //     updateAnswerBoxes();
+        // }
+
+        // Clear selected answer (removes one letter at a time)
         function clearAnswer() {
-            selectedLetters = [];
-            document.querySelectorAll("#letter-box button").forEach(btn => {
-                btn.disabled = false;
-                btn.classList.remove("opacity-50");
-            });
+            if (selectedLetters.length > 0) {
+                // 1. Remove the last selected letter (string) from the main array
+                selectedLetters.pop(); // This keeps selectedLetters as an array of strings
+
+                // 2. Remove the corresponding button element from the history array
+                const lastUsedButton = selectedButtonsHistory.pop();
+
+                // 3. Re-enable the specific button
+                if (lastUsedButton) { // Ensure a button was actually retrieved
+                    lastUsedButton.disabled = false;
+                    lastUsedButton.classList.remove("opacity-50");
+                    // Optional: Remove any other 'selected' classes you might have
+                    // lastUsedButton.classList.remove("selected-state-class");
+                }
+            }
+            // 4. Update the displayed answer boxes
             updateAnswerBoxes();
         }
         
         function nextLevel() {
             console.log("Next Words Triggered");
-            fetch(`/player/next-level/${id}`, {
+            fetch(`/game/${mode}/next-level/${id}`, {
                 method: 'GET',  // Change POST to GET
                 headers: {
                     'Content-Type': 'application/json',
@@ -211,16 +246,18 @@
                 wordsMeaning = data.wordMeanings
                 words = data.shuffledWords; // Update words array with new words
                 lvl = data.nextLevel;
+                hgh_lvl = data.nextLevel > hgh_lvl ? data.nextLevel : hgh_lvl
                 id = data.nextLevel; // Update level
-                solvedWords = [false, false, false]; // Reset solved words tracker
-                selectedLetters = []; // Clear selected letters
-                jumbledLetters = shuffleWord(words.join("")); // Shuffle new words
+                solvedWords = Array(words.length).fill(false);
+                selectedLetters = [];
+                selectedButtonsHistory = []; // <--- Clear this too!
+                jumbledLetters = shuffleWord(words.join(""));
                 setupGame(); // Reload UI with new words
             })
             .catch(error => {
                 console.error("Error fetching next level:", error);
             });
-
+            playSound('level-up');
             document.getElementById('solved-words-list').innerHTML = "";
             let nextBtn = document.getElementById("nextBtn");
                     nextBtn.innerHTML = 'Close';
@@ -244,12 +281,18 @@
             if (userWord === correctWord) {
                 solvedWords[currentWordIndex] = true;
                 document.getElementById("result").innerText = `✅ Correct! Word ${currentWordIndex + 1} solved!`;
-                points += 100;
+                if(mode == "easy"){
+                    points += 20;
+                }else if(mode == "intermediate"){
+                    points += 50;
+                }else {
+                    points += 70;
+                }
                 document.getElementById("current_points").innerHTML = `POINTS: ${points} `
 
                  lockAnswerBoxes(currentWordIndex);          
                 disableLetterButtons();
-
+                playSound('success')
                  // Show the solved word and its meaning at the bottom
                     
                  displaySolvedWord(currentWordIndex);
@@ -263,12 +306,24 @@
                     pauseTimer();
                     document.getElementById('my_modal_41').showModal();
                     document.getElementById("result").innerText = ``;
-                    timeLeft += 30;
+                      if(mode == "easy"){
+                        timeLeft += 10;
+                    }else if(mode == "intermediate"){
+                        timeLeft += 20;
+                    }else {
+                        timeLeft += 40;
+                    }
                     lvl++;
                 }
             } else {
                 document.getElementById("result").innerText = "❌ Incorrect! Try again.";
-             
+                selectedLetters = [];
+                document.querySelectorAll("#letter-box button").forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove("opacity-50");
+                });
+                updateAnswerBoxes();
+                playSound('wrong-ans')
             }
 
             selectedLetters = [];
@@ -330,20 +385,21 @@
 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    if(lvl > highestLevel){
-                        document.getElementById('hgh_lvl').innerHTML = `NEW CLEARED LEVEL: ${lvl}`
+                    if(hgh_lvl > highestLevel){
+                        document.getElementById('hgh_lvl').innerHTML = `NEW CLEARED LEVEL: ${hgh_lvl}`
                     }else {
-                        document.getElementById('hgh_lvl').innerHTML = `CLEARED LEVEL: ${lvl}`
+                        document.getElementById('hgh_lvl').innerHTML = `CLEARED LEVEL: ${hgh_lvl}`
                     }
                     if (points > highScore){
                           document.getElementById('hgh_pts').innerHTML = `NEW HIGH SCORE: ${points}`
                     }else {
                           document.getElementById('hgh_pts').innerHTML = `SCORE: ${points}`
                     }
-                    let route = `/player/gameOver/${lvl}/${points}`; // Adjust according to your route structure
+                    let route = `/player/gameOver/${hgh_lvl}/${points}`; // Adjust according to your route structure
                     document.getElementById("gameOver").href = route;
                     document.getElementById('my_modal_39').showModal();
                     disableLetterButtons(); // Disable input when time is up
+                    playSound('game-over')
                 }
             }, 1000);
         }

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('levels', function (Blueprint $table) {
             $table->id();
-            $table->integer('level_number')->unique();
+            $table->integer('level_number');
             $table->string('question');
+              $table->string('mode');
             $table->timestamps();
         });
     }

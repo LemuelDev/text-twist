@@ -12,7 +12,32 @@
     <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
 </head>
 <body class="min-h-screen bg-[#1B56FD] text-white">
-    
+    <audio id="bgMusic" autoplay loop >
+        <source src="{{ asset('sounds/bg-sound.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    {{-- adjust bg volume --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgMusic = document.getElementById('bgMusic');
+
+            if (bgMusic) {
+                // Set the volume to 30% (0.3)
+                // Values range from 0.0 (silent) to 1.0 (full volume)
+                bgMusic.volume = 0.7;
+
+                // Handle potential autoplay policy issues:
+                // Try to play it if it was blocked. This might still be blocked
+                // by some browsers if there's been no user interaction.
+                bgMusic.play().catch(error => {
+                    console.warn('Background music autoplay was prevented:', error);
+                    // You could optionally show a message to the user here
+                    // or offer a "click to enable sound" button.
+                });
+            }
+        });
+    </script>
       {{-- content --}}
         <h4 class="text-3xl text-center py-4 pt-32 my-0  text-yellow-300">Signup</h4>
          <form action="{{route("users.store")}}" method="POST" class="grid justify-center items-center grid-cols-1 md:grid-cols-2 gap-4 rounded-md outline-none  max-w-[1000px] mx-auto shadow-xl p-8 max-sm:pt-4">

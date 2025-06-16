@@ -166,12 +166,52 @@ class AdminController extends Controller
 
     public function questions() {
 
-        $nextLevelNumber = (Level::max('level_number') ?? 0) + 1;
+        $lastLevels = [
+            'easy' => Level::where('mode', 'easy')->max('level_number') ?? 0,
+            'intermediate' => Level::where('mode', 'intermediate')->max('level_number') ?? 0,
+            'hard' => Level::where('mode', 'hard')->max('level_number') ?? 0,
+        ];
 
-        $words = Word::paginate(4);
+        $words = Word::whereHas('level', function ($query) {
+            $query->where('mode', 'easy');
+        })->paginate(4);
 
-        return view ("admin.questions", compact('nextLevelNumber', 'words'));
+        // Pass both the paginated words and the lastLevels array to your view
+        return view("admin.questions", compact('words', 'lastLevels'));
     }
+
+     public function intermediate() {
+
+        $lastLevels = [
+            'easy' => Level::where('mode', 'easy')->max('level_number') ?? 0,
+            'intermediate' => Level::where('mode', 'intermediate')->max('level_number') ?? 0,
+            'hard' => Level::where('mode', 'hard')->max('level_number') ?? 0,
+        ];
+
+        $words = Word::whereHas('level', function ($query) {
+            $query->where('mode', 'intermediate');
+        })->paginate(4);
+
+        // Pass both the paginated words and the lastLevels array to your view
+        return view("admin.questions", compact('words', 'lastLevels'));
+    }
+
+     public function hard() {
+
+        $lastLevels = [
+            'easy' => Level::where('mode', 'easy')->max('level_number') ?? 0,
+            'intermediate' => Level::where('mode', 'intermediate')->max('level_number') ?? 0,
+            'hard' => Level::where('mode', 'hard')->max('level_number') ?? 0,
+        ];
+
+        $words = Word::whereHas('level', function ($query) {
+            $query->where('mode', 'hard');
+        })->paginate(4);
+
+        // Pass both the paginated words and the lastLevels array to your view
+        return view("admin.questions", compact('words', 'lastLevels'));
+    }
+
 
     public function deleteWord(Word $word){
         $word->delete();
@@ -181,22 +221,32 @@ class AdminController extends Controller
 
     public function addWord(Request $request) {
         $request->validate([
-            'level_number' => 'required|unique:levels',
+            'level_number' => 'required',
             'question' => 'required',
-            'words' => 'required|array|size:3',
-            'meanings' => 'required|array|size:3',
+            'words' => 'required|array',
+            'meanings' => 'required|array',
+            'mode_select' => 'required'
         ]);
     
         $level = Level::create([
             'level_number' => $request->level_number,
             'question' => $request->question,
+            'mode' => $request->mode_select,
         ]);
     
+        if(count($request->words ) > 0){
         foreach ($request->words as $index => $word) {
             Word::create([
                 'level_id' => $level->id,
                 'word' => strtolower($word),
                 'meaning' => $request->meanings[$index],
+            ]);
+        }
+        }else{
+            Word::create([
+                'level_id' => $level->id,
+                'word' => strtolower($request->words[0]),
+                'meaning' => $request->meanings[0],
             ]);
         }
 
@@ -211,40 +261,58 @@ class AdminController extends Controller
 }
 
 
-public function updateWord(Request $request, $id)
+public function updateWord(Request $request, Level $id)
 {
-    // Validate the incoming request data
-    $request->validate([
-        'question' => 'required|string',
-        'words.*.word' => 'required|string',
-        'words.*.meaning' => 'required|string',
+    // Define expected word/meaning counts per mode for validation
+    $modeWordCounts = [
+        'easy' => 1,
+        'intermediate' => 2,
+        'hard' => 3,
+    ];
+
+    // Get the expected count for the current id's mode
+    $expectedCount = $modeWordCounts[$id->mode] ?? 1; // Default to 1 if mode somehow missing
+
+    $validatedData = $request->validate([
+        // id_number is readonly, so usually not validated for unique here in update.
+        // If it can be changed, adjust validation.
+        'question' => ['required', 'string', 'max:255'],
+        // Validate words and meanings arrays to ensure they match the expected count for the mode
+        'words' => ['required', 'array', 'size:' . $expectedCount],
+        'words.*.id' => ['nullable', 'integer', 'exists:words,id'], // ID for existing words
+        'words.*.word' => ['required', 'string', 'max:50'],
+        'words.*.meaning' => ['required', 'string', 'max:255'],
     ]);
 
-    // Find the level to update
-    $level = Level::findOrFail($id);
-    $level->question = $request->question;
-    $level->save(); // Save the updated question
+    // 1. Update the id's question
+    $id->update([
+        'question' => $validatedData['question'],
+        // 'mode' and 'level_number' typically won't be updated here as they define the level itself.
+        // If you need to allow changing the mode of a level, that's a more complex operation
+        // as it affects the number of words. For now, assume they are fixed.
+    ]);
 
-    // Loop through the words submitted by the user
-    foreach ($request->words as $wordData) {
+    // 2. Update or create associated Word records
+    foreach ($validatedData['words'] as $wordData) {
+        // If an ID is present, it's an existing word to update
         if (isset($wordData['id'])) {
-            // Update existing word if 'id' exists
-            Word::where('id', $wordData['id'])->update([
-                'word' => $wordData['word'],
-                'meaning' => $wordData['meaning'],
-            ]);
+            Word::where('id', $wordData['id'])
+                ->where('level_id', $id->id) // Ensure the word belongs to this level
+                ->update([
+                    'word' => strtolower($wordData['word']),
+                    'meaning' => $wordData['meaning'],
+                ]);
         } else {
-            // Add new word if 'id' does not exist
-            Word::create([
-                'level_id' => $level->id, // Assuming you have a relationship between level and word
-                'word' => $wordData['word'],
-                'meaning' => $wordData['meaning'],
-            ]);
+             return redirect()->route("admin.questions")->with("failed", "Update couldn't save!");
         }
     }
 
-    // Redirect back with a success message
-    return redirect()->route('admin.questions')->with('success', 'Level updated successfully.');
+    // Handle deletion of words if the number of submitted words is less than original
+    // This scenario is less likely if you enforce 'size' validation for the current mode.
+    // However, if an admin tries to submit fewer words than previously existed for a level's mode,
+    // you'd need to delete the "extra" words. For now, assuming 'size' validation handles this.
+
+    return redirect()->route("admin.questions")->with("success", "Level updated successfully!");
 }
 
 

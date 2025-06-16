@@ -69,9 +69,13 @@ Route::post('/player/profile/updatePassword/', [PlayerController::class, 'update
 
 Route::get("/player/gameOver/{lvl}/{points}", [GameController::class, "gameOver"])->name('player.gameOver');
 
-Route::get('/player/game', [GameController::class, 'game'])->name('player.newGame');
+Route::get('/player/game/easy/{levelNumber?}', [GameController::class, 'easy'])->name('player.newGame');
 
-Route::get('/player/next-level/{id}', [GameController::class, 'nextLevel'])->name('player.nextLevel');
+Route::get('/player/game/intermidiate/{levelNumber?}', [GameController::class, 'intermediate'])->name('player.intermidiate');
+
+Route::get('/player/game/hard/{levelNumber?}', [GameController::class, 'hard'])->name('player.hard');
+
+Route::get('/game/{mode}/next-level/{currentLvl}', [GameController::class, 'nextLevel'])->name('player.nextLevel');
 
 
 
@@ -102,7 +106,11 @@ Route::get('/admin/profile/editPassword/', [AdminController::class, 'editPasswor
 
 Route::post('/admin/profile/updatePassword/', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
 
-Route::get("/admin/questions", [AdminController::class, "questions"])->name("admin.questions");
+Route::get("/admin/questions/easy", [AdminController::class, "questions"])->name("admin.questions");
+
+Route::get("/admin/questions/intermediate", [AdminController::class, "intermediate"])->name("admin.intermediate");
+
+Route::get("/admin/questions/hard", [AdminController::class, "hard"])->name("admin.hard");
 
 Route::post("/admin/add-word", [AdminController::class, "addWord"])->name("admin.addWord");
 

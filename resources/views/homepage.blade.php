@@ -13,8 +13,33 @@
     <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
    
 </head>
-<body class="min-h-screen bg-[#1B56FD]">
+<body class="min-h-screen bg-[#1B56FD] text-white">
+     <audio id="bgMusic" autoplay loop >
+        <source src="{{ asset('sounds/bg-sound.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
+    {{-- adjust bg volume --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgMusic = document.getElementById('bgMusic');
+
+            if (bgMusic) {
+                // Set the volume to 30% (0.3)
+                // Values range from 0.0 (silent) to 1.0 (full volume)
+                bgMusic.volume = .7;
+
+                // Handle potential autoplay policy issues:
+                // Try to play it if it was blocked. This might still be blocked
+                // by some browsers if there's been no user interaction.
+                bgMusic.play().catch(error => {
+                    console.warn('Background music autoplay was prevented:', error);
+                    // You could optionally show a message to the user here
+                    // or offer a "click to enable sound" button.
+                });
+            }
+        });
+    </script>
      {{-- content --}}
         <div class="flex justify-center items-center flex-col  rounded-md outline-none pt-40">
             <h4>Text Twist Game</h4>

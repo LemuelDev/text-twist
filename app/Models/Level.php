@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Level extends Model
 {
     use HasFactory;
-    protected $fillable = ['level_number', 'question'];
+    protected $fillable = ['level_number', 'question', 'mode'];
 
     public function words()
     {

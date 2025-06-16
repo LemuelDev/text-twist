@@ -15,11 +15,41 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body class="min-h-screen bg-[#1B56FD] text-white">
-    
+
+    <audio id="bgMusic" autoplay loop >
+        <source src="{{ asset('sounds/bg-sound.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    {{-- adjust bg volume --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgMusic = document.getElementById('bgMusic');
+
+            if (bgMusic) {
+                // Set the volume to 30% (0.3)
+                // Values range from 0.0 (silent) to 1.0 (full volume)
+                bgMusic.volume = 0.7;
+
+                // Handle potential autoplay policy issues:
+                // Try to play it if it was blocked. This might still be blocked
+                // by some browsers if there's been no user interaction.
+                bgMusic.play().catch(error => {
+                    console.warn('Background music autoplay was prevented:', error);
+                    // You could optionally show a message to the user here
+                    // or offer a "click to enable sound" button.
+                });
+            }
+        });
+    </script>
+
+
     @if (request()->route()->getName() == "player.dashboard" || request()->route()->getName() == "player.newGame" || request()->route()->getName() == "player.nextLevel")
          <div class="play text-md max-md:text-center absolute top-5 left-5">Player:{{auth()->user()->userProfile->firstname}}</div>
     @endif
 
      @yield('content')
+    
+
 </body>
 </html>

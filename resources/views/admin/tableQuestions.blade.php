@@ -7,6 +7,7 @@
         <th class="text-lg text-center text-white ">Level Number</th>
         <th class="text-lg text-center text-white">Words to Solve</th>
         <th class="text-lg text-center text-white">Meaning</th>
+            <th class="text-lg text-center text-white">Mode</th>
         <th class="text-lg text-center text-white">Action</th>
       </tr>
     </thead>
@@ -16,7 +17,8 @@
      <tr>
         <td class="max-lg:min-w-[100px] min-w-[100px] text-center text-md">{{$word->level->level_number}}</td>
         <td class="min-w-[350px] text-center text-md">{{$word->word}} 🤔</td>
-        <td class="min-w-[500px] text-center text-md">{{ $word->meaning}}</td>
+        <td class="min-w-[480px] text-center text-md">{{ $word->meaning}}</td>
+        <td class="text-center text-md">{{ $word->level->mode}}</td>
         <td class="text-center text-md flex justify-center items-center gap-2">
           <a href="{{route('admin.editWord', $word->level->id)}}" class="btn btn-secondary text-white">Edit</a>
           <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="document.getElementById('delete_modal_{{$word->id}}').showModal()">Delete</button>

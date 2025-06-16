@@ -39,9 +39,28 @@
             <h4 class="text-center ">Text Twist Game</h4>
             <p class="text-xl pt-1 text-yellow-200 text-center">Computer Programming Edition!</p>
             <h5 class="text-lg text-center ">HIGH SCORE:  {{auth()->user()->userProfile->highscore}} </h5>
-            <a href="{{route('player.newGame')}}" class="text-xl rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-4 px-8 hover:no-underline hover:text-white">Let's Play</a>
+            <button onclick="my_modal_2.showModal()" class="text-xl rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-4 px-8 hover:no-underline hover:text-white">Let's Play</button>
         </div>
     </div>
+
+      <dialog id="my_modal_2" class="modal">
+                  <div class="modal-box">
+                    {{-- <h3 class="text-xl font-bold">Confirmation</h3> --}}
+                     <form method="dialog">
+                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <p class="pt-4 text-lg text-center">Select Modes</p>
+                    <div class="modal-action">
+                     <div class="flex gap-4 justify-center items-center">
+                        <a href="{{route('player.newGame')}}" class="px-5 py-3 rounded-md outline-none border-none bg-purple-500 text-white hover:no-underline">Easy</a>
+                        <a  href="{{route('player.intermidiate')}}" class="px-5 py-3 rounded-md outline-none border-none bg-purple-500 text-white hover:no-underline">Intermediate</a>
+                        <a  href="{{route('player.hard')}}" class="px-5 py-3 rounded-md outline-none border-none bg-purple-500 text-white hover:no-underline">Hard</a>
+                     </div>
+                     <br>
+                      
+                    </div>
+                  </div>
+       </dialog>
 
 
 @endsection

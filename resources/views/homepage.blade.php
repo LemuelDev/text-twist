@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/jpeg" href="{{ asset('logo-game.jpg') }}">
     <title>Text Twist Game</title>
     @vite('resources/css/app.css')
     {{-- @vite('resources/scss/bg.scss') --}}

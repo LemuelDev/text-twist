@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Text Twist - Login</title>
-
+      <link rel="icon" type="image/jpeg" href="{{ asset('logo-game.jpg') }}">
     @vite('resources/css/app.css')
     @vite('resources/scss/bg.scss')
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Text-Twist: {{auth()->user()->userProfile->firstname}}</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('logo-game.jpg') }}">
     @vite('resources/css/app.css')
     @vite('resources/scss/bg.scss')
     <link rel="preconnect" href="https://fonts.googleapis.com">

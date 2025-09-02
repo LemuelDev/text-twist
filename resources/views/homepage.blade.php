@@ -28,7 +28,7 @@
             if (bgMusic) {
                 // Set the volume to 30% (0.3)
                 // Values range from 0.0 (silent) to 1.0 (full volume)
-                bgMusic.volume = .7;
+                bgMusic.volume = 1;
 
                 // Handle potential autoplay policy issues:
                 // Try to play it if it was blocked. This might still be blocked

@@ -120,8 +120,18 @@ class GameController extends Controller
         // 1. Get the highest level_number for the SPECIFIC MODE
         $maxLevel = Level::where('mode', $mode)->max('level_number') ?? 0;
 
-        // 2. Determine the next level. If max level for this mode is reached, loop back to 1.
-        $nextLevelNumber = ($currentLvl + 1) <= $maxLevel ? ($currentLvl + 1) : 1;
+      // 2. Determine the next level. If max level for this mode is reached, show the congrats modal.
+            $isLastLevel = ($currentLvl == $maxLevel);
+            if ($isLastLevel) {
+                // If it's the last level, return a specific response (e.g., JSON)
+                // that tells the front-end to show the congrats modal.
+                return response()->json([
+                    'status' => 'completed',
+                    'message' => 'Congratulations! All levels cleared.',
+                ]);
+            } else {
+                $nextLevelNumber = $currentLvl + 1;
+            }
 
         // 3. Get the Level and its words, filtering by mode and the determined next level number
         $level = Level::with('words')

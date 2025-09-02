@@ -225,48 +225,75 @@
             updateAnswerBoxes();
         }
         
-        function nextLevel() {
-            console.log("Next Words Triggered");
-            fetch(`/game/${mode}/next-level/${id}`, {
-                method: 'GET',  // Change POST to GET
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);  // Debug: Log response data to check if it's coming as expected
-                question = data.question;
-                wordsMeaning = data.wordMeanings
-                words = data.shuffledWords; // Update words array with new words
-                lvl = data.nextLevel;
-                hgh_lvl = data.nextLevel > hgh_lvl ? data.nextLevel : hgh_lvl
-                id = data.nextLevel; // Update level
-                solvedWords = Array(words.length).fill(false);
-                selectedLetters = [];
-                selectedButtonsHistory = []; // <--- Clear this too!
-                jumbledLetters = shuffleWord(words.join(""));
-                setupGame(); // Reload UI with new words
-            })
-            .catch(error => {
-                console.error("Error fetching next level:", error);
-            });
-            playSound('level-up');
-            document.getElementById('solved-words-list').innerHTML = "";
-            let nextBtn = document.getElementById("nextBtn");
-                    nextBtn.innerHTML = 'Close';
-                    nextBtn.onclick =  null; // Corrected line
-                    let txtSolve = document.getElementById('txtSolve');
-                    txtSolve.classList.add('hidden'); // Corrected line
-            startTimer();  // Restart the timer for the next level
+function nextLevel() {
+    console.log("Next Words Triggered");
+    fetch(`/game/${mode}/next-level/${id}`, {
+        method: 'GET', // Change POST to GET
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data); // Debug: Log response data to check if it's coming as expected
+
+        // Check for the "completed" status from the backend
+        if (data.status === 'completed') {
+          
+            // The rest of the game-related logic will not run because the game is over.
+            // You can add logic here to update the modal with high scores if your backend sends them.
+            // For example:
+            document.getElementById('hgh_lvl1').textContent = `Highest Level: ${hgh_lvl}`;
+            document.getElementById('hgh_pts1').textContent = `Highest Points: ${points}`;
+            let route = `/player/gameOver/${hgh_lvl}/${points}`; // Adjust according to your route structure
+            document.getElementById("gameComplete").href = route;
+            document.getElementById('my_modal_40').showModal();
+            disableLetterButtons(); // Disable input when time is up
+            // We can stop here, no need to proceed with setting up the next level.
+            return;
         }
 
+        // If it's not "completed", it means there's a next level.
+        // Proceed with your original logic to set up the next level.
+        question = data.question;
+        wordsMeaning = data.wordMeanings;
+        words = data.shuffledWords;
+        lvl = data.nextLevel;
+        hgh_lvl = data.nextLevel > hgh_lvl ? data.nextLevel : hgh_lvl;
+        id = data.nextLevel;
+        solvedWords = Array(words.length).fill(false);
+        selectedLetters = [];
+        selectedButtonsHistory = [];
+        jumbledLetters = shuffleWord(words.join(""));
+        setupGame();
+
+        // Update UI elements for the new level
+        document.getElementById('solved-words-list').innerHTML = "";
+        let nextBtn = document.getElementById("nextBtn");
+        nextBtn.innerHTML = 'Close';
+        nextBtn.onclick = null;
+        let txtSolve = document.getElementById('txtSolve');
+        txtSolve.classList.add('hidden');
+
+        // Restart the timer for the next level
+        startTimer();
+
+    })
+    .catch(error => {
+        console.error("Error fetching next level:", error);
+    });
+    
+    // Play sound, but only if the game isn't over.
+    // This part should be inside the .then() block to ensure it only plays on a successful level up.
+    // For simplicity, you can keep it outside, but be aware it will play even if the game is completed.
+    playSound('level-up');
+}
 
         // Submit and check word
         function submitWord() {
@@ -442,6 +469,18 @@
     <p class="py-4 text-center text-white text-sm" id="hgh_pts"></p>
     <div class="modal-action">
         <a id="gameOver" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
+    </div>
+    </div>
+</dialog>
+
+<dialog id="my_modal_40" class="modal">
+    <div class="modal-box">
+    <h3 class="text-xl font-bold text-white">Congratulations!</h3>
+    <p class="py-4 pt-8 text-center text-white text-2xl"> You cleared all the levels and questions!</p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_lvl1"></p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_pts1"></p>
+    <div class="modal-action">
+        <a id="gameComplete" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
     </div>
     </div>
 </dialog>

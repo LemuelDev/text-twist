@@ -305,7 +305,9 @@
                 };
             } else {
                 nextBtn.innerHTML = 'Close';
-                nextBtn.onclick = null; // Let the event listener handle the close and resume
+               nextBtn.onclick = () => {
+                 correctModal.close(); // Explicitly close the modal
+        };
             }
         } else {
             document.getElementById("result").innerText = "❌ Incorrect! Try again.";

@@ -89,414 +89,349 @@
         </div>
         </div>
     </dialog> --}}
+<script>
+    // --- Global Variables (Declared only once) ---
+    let highestLevel = parseInt(@json($lvl_cleared));
+    let highScore = parseInt(@json($highscore));
+    let lvl = 1;
+    let hgh_lvl = lvl;
+    let id = lvl;
+    let mode = @json($mode);
+    let points = 0;
+    let words = @json($shuffledWords);
+    let selectedLetters = [];
+    let selectedButtonsHistory = [];
+    let solvedWords = Array(words.length).fill(false);
+    let jumbledLetters = shuffleWord(words.join(""));
+    let wordsMeaning = @json($wordMeanings); 
+    let firstQuestion = @json($question);
+    let question;
 
-    <script>
-        // Example words (3 words to solve)
-        let highestLevel = parseInt(@json($lvl_cleared));
-        let  highScore = parseInt(@json($highscore));
-        let lvl = 1;
-        let hgh_lvl = lvl;
-        let id = lvl;
-        let mode = @json($mode);
-        let points = 0;
-        let words = @json($shuffledWords); // This is the array of objects [{jumbled: "..."}, ...]
-        let selectedLetters = [];
-        let selectedButtonsHistory = [];
-        let solvedWords = Array(words.length).fill(false);
-        let jumbledLetters = shuffleWord(words.join("")); // Combine all letters and shuffle
-        let wordsMeaning = @json($wordMeanings); 
-        let timerPaused = false;  // To track if the timer is paused
-        // Function to display answer boxes and letters
-        let firstQuestion = @json($question);
-        let question;
+    let timer;
+    let timeLeft = 60;
 
-        function playSound(soundName) {
-            const audio = new Audio("{{ asset('sounds/') }}" + `/${soundName}.mp3`);
-            audio.play()
-                .catch(error => {
-                    console.warn(`Sound playback blocked for ${soundName}:`, error);
-                    // This often happens if autoplay is attempted without user interaction
-                });
+    // Get a reference to your modals
+    const correctModal = document.getElementById('my_modal_41');
+    const gameOverModal = document.getElementById('my_modal_39');
+
+    // --- Modal Event Listener ---
+    correctModal.addEventListener('close', () => {
+        // Only resume the timer if not all words have been solved
+        if (!solvedWords.every(Boolean)) {
+            resumeTimer();
         }
-
-        function setupGame() {
-            document.getElementById('current_lvl').innerHTML = `LEVEL: ${lvl}`;
-            document.getElementById("question").innerHTML = typeof question === 'undefined' ? firstQuestion : question;
-            let answerBoxContainer = document.getElementById("answer-boxes");
-            answerBoxContainer.innerHTML = "";
-
-           console.log(words);
-           console.log(wordsMeaning);
-            console.log(question);
-            
-
-            // Create answer boxes for 3 words
-            words.forEach((word, wordIndex) => {
-                let wordContainer = document.createElement("div");
-                wordContainer.className = "flex flex-wrap justify-center gap-1";
-
-                for (let i = 0; i < word.length; i++) {
-                    let box = document.createElement("div");
-                    box.className = "w-12 h-12 border-2 border-gray-500 text-xl text-black font-bold flex justify-center items-center bg-gray-200";
-                    box.dataset.index = wordIndex; // Store which word this box belongs to
-                    wordContainer.appendChild(box);
-                }
-
-                answerBoxContainer.appendChild(wordContainer);
-            });
-
-            // Create letter buttons
-            let letterBoxContainer = document.getElementById("letter-box");
-            letterBoxContainer.innerHTML = "";
-            jumbledLetters.split("").forEach((letter) => {
-                let button = document.createElement("button");
-                button.className = "w-12 h-10 p-1 bg-blue-400 text-white text-xl font-bold rounded";
-                button.innerText = letter;
-                button.dataset.letter = letter;
-                button.onclick = () => selectLetter(letter, button);
-                letterBoxContainer.appendChild(button);
-            });
-        }
-
-        // Shuffle word function
-        function shuffleWord(word) {
-            return word.split("").sort(() => Math.random() - 0.5).join("");
-        }
-
-        // Handle selecting a letter
-        function selectLetter(letter, button) { // 'button' here is the HTML button element
-            if (selectedLetters.length < getCurrentWord().length) {
-                selectedLetters.push(letter); // Still pushing just the string
-                selectedButtonsHistory.push(button); // <--- ADD THIS LINE: Store the button reference
-                updateAnswerBoxes();
-                button.disabled = true;
-                button.classList.add("opacity-50");
-            }
-        }
-
-        // Get the first unsolved word
-        function getCurrentWord() {
-            for (let i = 0; i < words.length; i++) {
-                if (!solvedWords[i]) return words[i];
-            }
-            return null;
-        }
-
-        // Update answer boxes
-        function updateAnswerBoxes() {
-            let wordIndex = solvedWords.indexOf(false); // Get first unsolved word
-            let boxes = document.querySelectorAll(`#answer-boxes div:nth-child(${wordIndex + 1}) div`);
-            boxes.forEach((box, index) => {
-                box.innerText = selectedLetters[index] || "";
-            });
-        }
-
-        // Clear selected answer
-        // function clearAnswer() {
-        //     selectedLetters = [];
-        //     document.querySelectorAll("#letter-box button").forEach(btn => {
-        //         btn.disabled = false;
-        //         btn.classList.remove("opacity-50");
-        //     });
-        //     updateAnswerBoxes();
-        // }
-
-        // Clear selected answer (removes one letter at a time)
-        function clearAnswer() {
-            if (selectedLetters.length > 0) {
-                // 1. Remove the last selected letter (string) from the main array
-                selectedLetters.pop(); // This keeps selectedLetters as an array of strings
-
-                // 2. Remove the corresponding button element from the history array
-                const lastUsedButton = selectedButtonsHistory.pop();
-
-                // 3. Re-enable the specific button
-                if (lastUsedButton) { // Ensure a button was actually retrieved
-                    lastUsedButton.disabled = false;
-                    lastUsedButton.classList.remove("opacity-50");
-                    // Optional: Remove any other 'selected' classes you might have
-                    // lastUsedButton.classList.remove("selected-state-class");
-                }
-            }
-            // 4. Update the displayed answer boxes
-            updateAnswerBoxes();
-        }
-        
-function nextLevel() {
-    console.log("Next Words Triggered");
-    fetch(`/game/${mode}/next-level/${id}`, {
-        method: 'GET', // Change POST to GET
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data); // Debug: Log response data to check if it's coming as expected
-
-        // Check for the "completed" status from the backend
-        if (data.status === 'completed') {
-          
-            // The rest of the game-related logic will not run because the game is over.
-            // You can add logic here to update the modal with high scores if your backend sends them.
-            // For example:
-            document.getElementById('hgh_lvl1').textContent = `Highest Level: ${hgh_lvl}`;
-            document.getElementById('hgh_pts1').textContent = `Highest Points: ${points}`;
-            let route = `/player/gameOver/${hgh_lvl}/${points}`; // Adjust according to your route structure
-            document.getElementById("gameComplete").href = route;
-            document.getElementById('my_modal_40').showModal();
-            disableLetterButtons(); // Disable input when time is up
-            // We can stop here, no need to proceed with setting up the next level.
-            return;
-        }
-
-        // If it's not "completed", it means there's a next level.
-        // Proceed with your original logic to set up the next level.
-        question = data.question;
-        wordsMeaning = data.wordMeanings;
-        words = data.shuffledWords;
-        lvl = data.nextLevel;
-        hgh_lvl = data.nextLevel > hgh_lvl ? data.nextLevel : hgh_lvl;
-        id = data.nextLevel;
-        solvedWords = Array(words.length).fill(false);
-        selectedLetters = [];
-        selectedButtonsHistory = [];
-        jumbledLetters = shuffleWord(words.join(""));
-        setupGame();
-
-        // Update UI elements for the new level
-        document.getElementById('solved-words-list').innerHTML = "";
-        let nextBtn = document.getElementById("nextBtn");
-        nextBtn.innerHTML = 'Close';
-        nextBtn.onclick = null;
-        let txtSolve = document.getElementById('txtSolve');
-        txtSolve.classList.add('hidden');
-
-        // Restart the timer for the next level
-        startTimer();
-
-    })
-    .catch(error => {
-        console.error("Error fetching next level:", error);
     });
-    
-    // Play sound, but only if the game isn't over.
-    // This part should be inside the .then() block to ensure it only plays on a successful level up.
-    // For simplicity, you can keep it outside, but be aware it will play even if the game is completed.
-    playSound('level-up');
-}
 
-   // Submit and check word
-function submitWord() {
-    let currentWordIndex = solvedWords.indexOf(false);
-    let userWord = selectedLetters.join("");
-    let correctWord = words[currentWordIndex];
+    // --- Game Functions ---
+    function playSound(soundName) {
+        const audio = new Audio("{{ asset('sounds/') }}" + `/${soundName}.mp3`);
+        audio.play().catch(error => {
+            console.warn(`Sound playback blocked for ${soundName}:`, error);
+        });
+    }
 
-    if (userWord === correctWord) {
-        solvedWords[currentWordIndex] = true;
-        document.getElementById("result").innerText = `✅ Correct! Word ${currentWordIndex + 1} solved!`;
-        if (mode == "easy") {
-            points += 20;
-        } else if (mode == "intermediate") {
-            points += 50;
-        } else {
-            points += 70;
+    function setupGame() {
+        document.getElementById('current_lvl').innerHTML = `LEVEL: ${lvl}`;
+        document.getElementById("question").innerHTML = typeof question === 'undefined' ? firstQuestion : question;
+        let answerBoxContainer = document.getElementById("answer-boxes");
+        answerBoxContainer.innerHTML = "";
+        
+        words.forEach((word, wordIndex) => {
+            let wordContainer = document.createElement("div");
+            wordContainer.className = "flex flex-wrap justify-center gap-1";
+
+            for (let i = 0; i < word.length; i++) {
+                let box = document.createElement("div");
+                box.className = "w-12 h-12 border-2 border-gray-500 text-xl text-black font-bold flex justify-center items-center bg-gray-200";
+                box.dataset.index = wordIndex;
+                wordContainer.appendChild(box);
+            }
+            answerBoxContainer.appendChild(wordContainer);
+        });
+
+        let letterBoxContainer = document.getElementById("letter-box");
+        letterBoxContainer.innerHTML = "";
+        jumbledLetters.split("").forEach((letter) => {
+            let button = document.createElement("button");
+            button.className = "w-12 h-10 p-1 bg-blue-400 text-white text-xl font-bold rounded";
+            button.innerText = letter;
+            button.dataset.letter = letter;
+            button.onclick = () => selectLetter(letter, button);
+            letterBoxContainer.appendChild(button);
+        });
+    }
+
+    function shuffleWord(word) {
+        return word.split("").sort(() => Math.random() - 0.5).join("");
+    }
+
+    function selectLetter(letter, button) {
+        if (selectedLetters.length < getCurrentWord().length) {
+            selectedLetters.push(letter);
+            selectedButtonsHistory.push(button);
+            updateAnswerBoxes();
+            button.disabled = true;
+            button.classList.add("opacity-50");
         }
-        document.getElementById("current_points").innerHTML = `POINTS: ${points} `
+    }
 
-        lockAnswerBoxes(currentWordIndex);
-        disableLetterButtons();
-        playSound('success')
-        
-        // Pause the timer when a word is solved
-        pauseTimer();
+    function getCurrentWord() {
+        for (let i = 0; i < words.length; i++) {
+            if (!solvedWords[i]) return words[i];
+        }
+        return null;
+    }
 
-        // Show the solved word in the modal
-        displaySolvedWord(currentWordIndex);
-        document.getElementById('my_modal_41').showModal();
+    function updateAnswerBoxes() {
+        let wordIndex = solvedWords.indexOf(false);
+        if (wordIndex === -1) return; // All words solved, no boxes to update
+        let boxes = document.querySelectorAll(`#answer-boxes div:nth-child(${wordIndex + 1}) div`);
+        boxes.forEach((box, index) => {
+            box.innerText = selectedLetters[index] || "";
+        });
+    }
 
-        const nextBtn = document.getElementById("nextBtn");
-        
-        // Check if all words in the level are solved
-        if (solvedWords.every(Boolean)) {
-            // All words solved: Set the button to proceed to the next level
-            document.getElementById('txtSolve').classList.remove('hidden');
-            nextBtn.innerHTML = 'Proceed';
+    function clearAnswer() {
+        if (selectedLetters.length > 0) {
+            selectedLetters.pop();
+            const lastUsedButton = selectedButtonsHistory.pop();
+            if (lastUsedButton) {
+                lastUsedButton.disabled = false;
+                lastUsedButton.classList.remove("opacity-50");
+            }
+        }
+        updateAnswerBoxes();
+    }
+    
+    function nextLevel() {
+        console.log("Next Words Triggered");
+        fetch(`/game/${mode}/next-level/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+
+            if (data.status === 'completed') {
+                document.getElementById('hgh_lvl').innerHTML = `Highest Level: ${hgh_lvl}`;
+                document.getElementById('hgh_pts').innerHTML = `Highest Points: ${points}`;
+                let route = `/player/gameOver/${hgh_lvl}/${points}`;
+                document.getElementById("gameOver").href = route;
+                gameOverModal.showModal();
+                disableLetterButtons();
+                return;
+            }
             
-            // Use an arrow function to first close the modal, then call nextLevel()
-            nextBtn.onclick = () => {
-                document.getElementById('my_modal_41').close();
-                nextLevel();
-            };
+            // This is the core logic to update for the new level
+            question = data.question;
+            wordsMeaning = data.wordMeanings;
+            words = data.shuffledWords;
+            lvl = data.nextLevel;
+            hgh_lvl = data.nextLevel > hgh_lvl ? data.nextLevel : hgh_lvl;
+            id = data.nextLevel;
+            solvedWords = Array(words.length).fill(false);
+            selectedLetters = [];
+            selectedButtonsHistory = [];
+            jumbledLetters = shuffleWord(words.join(""));
 
-        } else {
-            // Not all words solved: Keep the button as 'Close' and resume the timer
+            // Add time to the existing timeLeft value
+            if (mode === "easy") {
+                timeLeft += 10;
+            } else if (mode === "intermediate") {
+                timeLeft += 20;
+            } else {
+                timeLeft += 40;
+            }
+
+            setupGame();
+            
+            document.getElementById('solved-words-list').innerHTML = "";
+            let nextBtn = document.getElementById("nextBtn");
             nextBtn.innerHTML = 'Close';
+            nextBtn.onclick = null;
+            let txtSolve = document.getElementById('txtSolve');
+            txtSolve.classList.add('hidden');
+
+            playSound('level-up');
+            startTimer(); // Restart the timer for the new level
+        })
+        .catch(error => {
+            console.error("Error fetching next level:", error);
+        });
+    }
+
+    function submitWord() {
+        let currentWordIndex = solvedWords.indexOf(false);
+        let userWord = selectedLetters.join("");
+        let correctWord = words[currentWordIndex];
+
+        if (userWord === correctWord) {
+            solvedWords[currentWordIndex] = true;
+            document.getElementById("result").innerText = `✅ Correct! Word ${currentWordIndex + 1} solved!`;
+            if (mode == "easy") {
+                points += 20;
+            } else if (mode == "intermediate") {
+                points += 50;
+            } else {
+                points += 70;
+            }
+            document.getElementById("current_points").innerHTML = `POINTS: ${points} `
+
+            lockAnswerBoxes(currentWordIndex);
+            disableLetterButtons();
+            playSound('success');
             
-            // Use an arrow function to first close the modal, then resume the timer
-            nextBtn.onclick = () => {
-                console.log("debugging");
-                document.getElementById('my_modal_41').close();
-                setTimeout(() => {
-                    resumeTimer();
-                }, 100); // 100 milliseconds is a safe, small delay.
-                        };
-                    }
-    } else {
-        // Incorrect word logic
-        document.getElementById("result").innerText = "❌ Incorrect! Try again.";
+            pauseTimer();
+            displaySolvedWord(currentWordIndex);
+            correctModal.showModal();
+
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (solvedWords.every(Boolean)) {
+                document.getElementById('txtSolve').classList.remove('hidden');
+                nextBtn.innerHTML = 'Proceed';
+                nextBtn.onclick = () => {
+                    correctModal.close();
+                    nextLevel();
+                };
+            } else {
+                nextBtn.innerHTML = 'Close';
+                nextBtn.onclick = null; // Let the event listener handle the close and resume
+            }
+        } else {
+            document.getElementById("result").innerText = "❌ Incorrect! Try again.";
+            selectedLetters = [];
+            document.querySelectorAll("#letter-box button").forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove("opacity-50");
+            });
+            updateAnswerBoxes();
+            playSound('wrong-ans');
+        }
+
         selectedLetters = [];
+        selectedButtonsHistory = []; // Make sure this is cleared
         document.querySelectorAll("#letter-box button").forEach(btn => {
             btn.disabled = false;
             btn.classList.remove("opacity-50");
         });
-        updateAnswerBoxes();
-        playSound('wrong-ans')
     }
 
-    // Reset letters outside of the main conditional block
-    selectedLetters = [];
-    document.querySelectorAll("#letter-box button").forEach(btn => {
-        btn.disabled = false;
-        btn.classList.remove("opacity-50");
-    });
-}
-        function displaySolvedWord(index) {
-            // Get the word and meaning from the 'wordsMeaning' array using the index
-            let solvedWord = wordsMeaning[index].word;
-            let wordMeaning = wordsMeaning[index].meaning;
-
-            // Create a new list item for the solved word and meaning
-            let listItem = document.createElement('li');
-            listItem.innerHTML = `<strong>${solvedWord}</strong>: ${wordMeaning}`;
-
-            // Append the list item to the solved words container
-            document.getElementById('solved-words-list').appendChild(listItem);
-        }
-
-      // Function to pause the timer
-        function pauseTimer() {
-            clearInterval(timer);  // Stop the current timer
-        }
-
-
-
-
-
-        function disableLetterButtons() {
-        document.querySelectorAll("#letter-box button").forEach(btn => {
-            btn.disabled = true;
-            btn.classList.add("opacity-50");
-        });
-        }
-
-        // Lock solved word answer boxes
-        function lockAnswerBoxes(index) {
-            let boxes = document.querySelectorAll(`#answer-boxes div:nth-child(${index + 1}) div`);
-            boxes.forEach(box => {
-                box.classList.add("bg-green-300");
-            });
-        }
-
-
-        let timer;
-        let timeLeft = 60; // Set your time limit in seconds
-
-        function resumeTimer() {
-    // Check if a timer is not already running
-    if (!timer) {
-        // Start a new interval using the existing timeLeft value
-        timer = setInterval(() => {
-            timeLeft--;
-            updateTimerDisplay();
-
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                // Your game over logic here
-                if(hgh_lvl > highestLevel){
-                    document.getElementById('hgh_lvl').innerHTML = `NEW CLEARED LEVEL: ${hgh_lvl}`
-                } else {
-                    document.getElementById('hgh_lvl').innerHTML = `CLEARED LEVEL: ${hgh_lvl}`
-                }
-                if (points > highScore){
-                     document.getElementById('hgh_pts').innerHTML = `NEW HIGH SCORE: ${points}`
-                } else {
-                     document.getElementById('hgh_pts').innerHTML = `SCORE: ${points}`
-                }
-                let route = `/player/gameOver/${hgh_lvl}/${points}`;
-                document.getElementById("gameOver").href = route;
-                document.getElementById('my_modal_39').showModal();
-                disableLetterButtons();
-                playSound('game-over')
-            }
-        }, 1000);
+    function displaySolvedWord(index) {
+        let solvedWord = wordsMeaning[index].word;
+        let wordMeaning = wordsMeaning[index].meaning;
+        let listItem = document.createElement('li');
+        listItem.innerHTML = `<strong>${solvedWord}</strong>: ${wordMeaning}`;
+        document.getElementById('solved-words-list').appendChild(listItem);
     }
-}
 
-        function startTimer() {
-            clearInterval(timer); // Clear any previous timer to prevent duplication
-            timeLeft = 60; // Reset timer
-            updateTimerDisplay();
+    function pauseTimer() {
+        clearInterval(timer);
+    }
 
+    function resumeTimer() {
+        if (!timer) {
             timer = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay();
 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    if(hgh_lvl > highestLevel){
-                        document.getElementById('hgh_lvl').innerHTML = `NEW CLEARED LEVEL: ${hgh_lvl}`
-                    }else {
-                        document.getElementById('hgh_lvl').innerHTML = `CLEARED LEVEL: ${hgh_lvl}`
+                    if (hgh_lvl > highestLevel) {
+                        document.getElementById('hgh_lvl').innerHTML = `NEW CLEARED LEVEL: ${hgh_lvl}`;
+                    } else {
+                        document.getElementById('hgh_lvl').innerHTML = `CLEARED LEVEL: ${hgh_lvl}`;
                     }
-                    if (points > highScore){
-                          document.getElementById('hgh_pts').innerHTML = `NEW HIGH SCORE: ${points}`
-                    }else {
-                          document.getElementById('hgh_pts').innerHTML = `SCORE: ${points}`
+                    if (points > highScore) {
+                        document.getElementById('hgh_pts').innerHTML = `NEW HIGH SCORE: ${points}`;
+                    } else {
+                        document.getElementById('hgh_pts').innerHTML = `SCORE: ${points}`;
                     }
-                    let route = `/player/gameOver/${hgh_lvl}/${points}`; // Adjust according to your route structure
+                    let route = `/player/gameOver/${hgh_lvl}/${points}`;
                     document.getElementById("gameOver").href = route;
-                    document.getElementById('my_modal_39').showModal();
-                    disableLetterButtons(); // Disable input when time is up
-                    playSound('game-over')
+                    gameOverModal.showModal();
+                    disableLetterButtons();
+                    playSound('game-over');
                 }
             }, 1000);
         }
+    }
 
-        function updateTimerDisplay() {
-            document.getElementById("timer").innerText = `⏰ Time Left: ${timeLeft}s`;
-        }
+    function startTimer() {
+        clearInterval(timer);
+        updateTimerDisplay();
 
-        // Call startTimer() when the game begins
-        document.addEventListener("DOMContentLoaded", () => {
-            startTimer();
-        });
+        timer = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
 
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "F5" || (event.ctrlKey && event.key === "r")) {
-                event.preventDefault();
-                alert("Refreshing is disabled while playing!");
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                if (hgh_lvl > highestLevel) {
+                    document.getElementById('hgh_lvl').innerHTML = `NEW CLEARED LEVEL: ${hgh_lvl}`;
+                } else {
+                    document.getElementById('hgh_lvl').innerHTML = `CLEARED LEVEL: ${hgh_lvl}`;
+                }
+                if (points > highScore) {
+                    document.getElementById('hgh_pts').innerHTML = `NEW HIGH SCORE: ${points}`;
+                } else {
+                    document.getElementById('hgh_pts').innerHTML = `SCORE: ${points}`;
+                }
+                let route = `/player/gameOver/${hgh_lvl}/${points}`;
+                document.getElementById("gameOver").href = route;
+                gameOverModal.showModal();
+                disableLetterButtons();
+                playSound('game-over');
             }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        document.getElementById("timer").innerText = `⏰ Time Left: ${timeLeft}s`;
+    }
+
+    function disableLetterButtons() {
+        document.querySelectorAll("#letter-box button").forEach(btn => {
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
         });
-        
-        history.pushState(null, null, window.location.href);
-        window.addEventListener("popstate", function () {
-            history.pushState(null, null, window.location.href);
-            alert("Going back is disabled during the game!");
+    }
+
+    function lockAnswerBoxes(index) {
+        let boxes = document.querySelectorAll(`#answer-boxes div:nth-child(${index + 1}) div`);
+        boxes.forEach(box => {
+            box.classList.add("bg-green-300");
         });
+    }
 
-
-
-
-        // Initialize game
+    // --- Page Load and Game Start ---
+    document.addEventListener("DOMContentLoaded", () => {
         setupGame();
-    </script>
+        startTimer();
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "F5" || (event.ctrlKey && event.key === "r")) {
+            event.preventDefault();
+            alert("Refreshing is disabled while playing!");
+        }
+    });
+    
+    history.pushState(null, null, window.location.href);
+    window.addEventListener("popstate", function () {
+        history.pushState(null, null, window.location.href);
+        alert("Going back is disabled during the game!");
+    });
+</script>
 
 
 <dialog id="my_modal_39" class="modal">

@@ -2,13 +2,13 @@
 
 @section('content')
   {{-- content --}}
-  <nav class="flex justify-end pr-4 items-center pt-6 pb-4">
+  <nav class="flex justify-end max-md:justify-center pr-4 items-center pt-6 pb-4">
     {{-- <div>
         <h4 class="text-lg"> </h4>
     </div> --}}
-    <p class="text-white text-lg px-4 pt-4">HIGHSCORE: {{$highscore}}</p>
+    <p class="text-white text-lg max-md:text-sm px-4 pt-4">HIGHSCORE: {{$highscore}}</p>
    
-    <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="my_modal_10.showModal()">Quit</button>
+    <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800 max-md:text-sm" onclick="my_modal_10.showModal()">Quit</button>
     <dialog id="my_modal_10" class="modal">
     <div class="modal-box">
         <h3 class="text-lg font-bold">Confirm!</h3>
@@ -27,8 +27,8 @@
     
 </nav>
 
-    <div class="pt-8">
-        <div class="flex justify-center flex-wrap items-center flex-col gap-2 rounded-lg shadow-lg outline-none bg-transparent  max-w-[700px] mx-auto p-8">
+    <div class="py-8">
+        <div class="flex justify-center max-sm:text-center flex-wrap items-center flex-col gap-2 rounded-lg shadow-lg outline-none bg-transparent  max-w-[700px] mx-auto p-8">
                 <!-- Timer -->
             <div class="flex items-center justify-center gap-6 py-4">
                 <div id="current_lvl" class="text-lg text-white">
@@ -47,7 +47,7 @@
             <div id="answer-boxes" class="space-y-4 mb-4"></div>
 
             <!-- Letter Selection Box -->
-            <div id="letter-box" class="flex justify-center flex-wrap gap-3 space-x-2 mb-4"></div>
+            <div id="letter-box" class="flex justify-center flex-wrap gap-3 mb-4 overflow-x-auto"></div>
 
             <!-- Controls -->
             <div class="mt-4">
@@ -62,9 +62,9 @@
             
             <dialog id="my_modal_41" class="modal">
                 <div class="modal-box">
-                <h3 class="text-xl font-bold">Correct!</h3>
+                <h3 class="text-xl max-sm:text-sm font-bold">Correct!</h3>
                 <div id="solved-words-container" class="mt-4">
-                    <p class="py-4 pt-8 text-center text-green-600 text-xl hidden" id="txtSolve" >🎉 You solved all words!</p>
+                    <p class="py-4 pt-8 text-center text-green-600 text-xl max-sm:text-sm hidden" id="txtSolve" >🎉 You solved all words!</p>
                     <h3 class="text-sm text-center">Solved Words</h3>
                     <ul id="solved-words-list" class="text-sm text-center pt-2"></ul>
                 </div>
@@ -463,8 +463,8 @@ function nextLevel() {
 
 <dialog id="my_modal_39" class="modal">
     <div class="modal-box">
-    <h3 class="text-xl font-bold text-white">Game Over!</h3>
-    <p class="py-4 pt-8 text-center text-white text-2xl">⏳ Time's up!</p>
+    <h3 class="text-xl max-sm:text-sm font-bold text-white">Game Over!</h3>
+    <p class="py-4 pt-8 text-center text-white text-2xl max-sm:text-sm">⏳ Time's up!</p>
     <p class="py-4 text-center text-white text-sm" id="hgh_lvl"></p>
     <p class="py-4 text-center text-white text-sm" id="hgh_pts"></p>
     <div class="modal-action">
@@ -475,8 +475,8 @@ function nextLevel() {
 
 <dialog id="my_modal_40" class="modal">
     <div class="modal-box">
-    <h3 class="text-xl font-bold text-white">Congratulations!</h3>
-    <p class="py-4 pt-8 text-center text-white text-2xl"> You cleared all the levels and questions!</p>
+    <h3 class="text-xl max-sm:text-sm font-bold text-white">Congratulations!</h3>
+    <p class="py-4 pt-8 text-center text-white text-2xl max-sm:text-sm"> You cleared all the levels and questions!</p>
     <p class="py-4 text-center text-white text-sm" id="hgh_lvl1"></p>
     <p class="py-4 text-center text-white text-sm" id="hgh_pts1"></p>
     <div class="modal-action">

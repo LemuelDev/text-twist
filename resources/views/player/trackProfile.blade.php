@@ -2,20 +2,20 @@
 
 @section('content')
 
-<div class="play text-md max-md:text-center absolute top-5 left-5">Player Profile</div>
+<div class="play text-md max-md:text-center max-md:pt-4 md:absolute top-5 left-5">Player Profile</div>
         
 
 
-<nav class="flex gap-5 justify-end pr-6 items-center pt-6 pb-4">
+<nav class="flex gap-5 justify-end max-md:justify-center md:pr-6 items-center pt-6 pb-4">
     {{-- <div>
         <h4 class="text-lg"> </h4>
     </div> --}}
-    <a href="{{route('player.dashboard')}}" class="text-lg text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-700 px-6 py-3 hover:text-white">
+    <a href="{{route('player.dashboard')}}" class="text-lg max-md:text-sm text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-700 px-6 py-3 hover:text-white">
         Dashboard
     </a>
 
     <div class="flex justify-end gap-4 items-center">
-        <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="my_modal_1.showModal()">Logout</button>
+        <button class="rounded-md px-4 py-3 outline-none border-none max-md:text-sm text-white bg-red-700 hover:bg-red-800" onclick="my_modal_1.showModal()">Logout</button>
         {{-- modal --}}
    
             <dialog id="my_modal_1" class="modal">
@@ -46,36 +46,36 @@
 <form method="POST" action="{{route("player.updateProfile")}}" class="grid justify-center items-center grid-cols-1 md:grid-cols-2 gap-4 rounded-md outline-none  max-w-[1000px] mx-auto shadow-xl p-8 max-sm:pt-4">
    @csrf
     <div>
-        <label for="firstname" class=" text-lg text-center text-white">FirstName:</label>
+        <label for="firstname" class=" text-lg max-md:text-sm text-center text-white">FirstName:</label>
         <input type="text" id="firstname" required value="{{auth()->user()->userProfile->firstname}}"  name="firstname" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
     </div>
     <div>
-        <label for="middlename" class=" text-lg text-center text-white">MiddleName:</label>
+        <label for="middlename" class=" text-lg max-md:text-sm text-center text-white">MiddleName:</label>
         <input type="text" id="middlename"  value="{{auth()->user()->userProfile->middlename}}" name="middlename" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
     </div>
     <div>
-        <label for="lastname" class=" text-lg text-center text-white">Lastname:</label>
+        <label for="lastname" class=" text-lg max-md:text-sm text-center text-white">Lastname:</label>
         <input type="text" id="lastname" required value="{{auth()->user()->userProfile->lastname}}"  name="lastname" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
     </div>
     <div>
-        <label for="studNumber" class=" text-lg text-center text-white">Student Number:</label>
+        <label for="studNumber" class=" text-lg max-md:text-sm text-center text-white">Student Number:</label>
         <input type="text" id="studNumber" required value="{{auth()->user()->userProfile->student_number}}"  name="student_number" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
     </div>
     <div>
-        <label for="year" class=" text-lg text-center text-white">Section:</label>
+        <label for="year" class=" text-lg max-md:text-sm text-center text-white">Section:</label>
         <input type="text" id="year" required  value="{{auth()->user()->userProfile->year}}" name="year" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
      
     </div>
     <div>
-        <label for="Username" class=" text-lg text-center text-white">Username:</label>
+        <label for="Username" class=" text-lg max-md:text-sm text-center text-white">Username:</label>
         <input type="text" id="Username" required  value="{{auth()->user()->username}}" name="username" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
     </div>
     <div class="md:col-span-2 md:max-w-[700px] md:mx-auto">
-        <label for="email" class=" text-lg text-center text-white">Email:</label>
+        <label for="email" class=" text-lg max-md:text-sm text-center text-white">Email:</label>
         <input type="email" id="email" name="email" required value="{{auth()->user()->userProfile->email}}" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white ">
     </div>
-    <div class="md:col-span-2 md:max-w-[700px] md:mx-auto">
-        <button class="text-lg rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-3  hover:no-underline hover:text-white">
+    <div class="md:col-span-2 col-span-1 flex justify-center md:max-w-[700px] md:mx-auto">
+        <button class="text-lg max-md:text-sm rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-3  hover:no-underline hover:text-white">
             Update Profile
      </button>
     </div>

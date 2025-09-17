@@ -2,20 +2,20 @@
 
 @section('content')
 
-<div class="play text-md max-md:text-center absolute top-5 left-5">Player Profile</div>
+<div class="play text-md max-md:text-center max-md:pt-4 md:absolute top-5 left-5">Player Profile</div>
         
 
 
-<nav class="flex gap-5 justify-end pr-6 items-center pt-6 pb-4">
+<nav class="flex gap-5 justify-end max-md:justify-center  md:pr-6 items-center pt-6 pb-4">
     {{-- <div>
         <h4 class="text-lg"> </h4>
     </div> --}}
-    <a href="{{route('player.dashboard')}}" class="text-lg text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-700 px-6 py-3 hover:text-white">
+    <a href="{{route('player.dashboard')}}" class="text-lg max-md:text-sm text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-700 px-6 py-3 hover:text-white">
         Dashboard
     </a>
 
     <div class="flex justify-end gap-4 items-center">
-        <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800" onclick="my_modal_1.showModal()">Logout</button>
+        <button class="rounded-md px-4 py-3 outline-none border-none text-white bg-red-700 hover:bg-red-800 max-md:text-sm" onclick="my_modal_1.showModal()">Logout</button>
         {{-- modal --}}
    
             <dialog id="my_modal_1" class="modal">
@@ -42,46 +42,46 @@
 {{-- content --}}
 
 <div class="flex justify-center items-center text-center pt-6 px-4 gap-7">
-    <h4 class="text-white text-lg">HIGHEST LEVEL CLEARED: <span class="text-yellow-200">{{auth()->user()->userProfile->lvl_cleared}}</span></h4>
-    <h4 class="text-white text-lg">HIGHSCORE: <span class="text-yellow-200">{{auth()->user()->userProfile->highscore}} pts</span></h4>
+    <h4 class="text-white text-lg max-md:text-sm">HIGHEST LEVEL CLEARED: <span class="text-yellow-200">{{auth()->user()->userProfile->lvl_cleared}}</span></h4>
+    <h4 class="text-white text-lg max-md:text-sm">HIGHSCORE: <span class="text-yellow-200">{{auth()->user()->userProfile->highscore}} pts</span></h4>
 </div>
 
 <div class="grid justify-center items-center grid-cols-1 md:grid-cols-2 gap-4 rounded-md outline-none  max-w-[1000px] mx-auto shadow-xl p-8 max-sm:pt-4">
    
   <div>
-       <label for="firstname" class=" text-lg text-center text-white">FirstName:</label>
+       <label for="firstname" class=" text-lg max-md:text-sm text-center text-white">FirstName:</label>
        <input type="text" id="firstname" readonly  value="{{auth()->user()->userProfile->firstname}}"  name="firstname" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
   </div>
   <div>
-    <label for="middlename" class=" text-lg text-center text-white">MiddleName:</label>
+    <label for="middlename" class=" text-lg max-md:text-sm text-center text-white">MiddleName:</label>
     <input type="text" id="middlename" readonly value="{{auth()->user()->userProfile->middlename}}" name="middlename" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
 </div>
   <div>
-       <label for="lastname" class=" text-lg text-center text-white">Lastname:</label>
+       <label for="lastname" class=" text-lg max-md:text-sm text-center text-white">Lastname:</label>
        <input type="text" id="lastname"  readonly value="{{auth()->user()->userProfile->lastname}}"  name="lastname" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
    </div>
    <div>
-       <label for="studNumber" class=" text-lg text-center text-white">Student Number:</label>
+       <label for="studNumber" class=" text-lg max-md:text-sm text-center text-white">Student Number:</label>
        <input type="text" id="studNumber"  readonly value="{{auth()->user()->userProfile->student_number}}"  name="studNumber" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
   </div>
   <div>
-       <label for="year" class=" text-lg text-center text-white">Section:</label>
+       <label for="year" class=" text-lg max-md:text-sm text-center text-white">Section:</label>
        <input type="text" id="year"  readonly value="{{auth()->user()->userProfile->year}}" name="year" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
        
   </div>
    <div>
-       <label for="Username" class=" text-lg text-center text-white">Username:</label>
+       <label for="Username" class=" text-lg max-md:text-sm text-center text-white">Username:</label>
        <input type="text" id="Username" readonly  value="{{auth()->user()->username}}" name="Username" class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white">
   </div>
   <div class="md:col-span-2 md:max-w-[700px] md:mx-auto">
-       <label for="email" class=" text-lg text-center text-white">Email:</label>
+       <label for="email" class=" text-lg max-md:text-sm text-center text-white">Email:</label>
        <input type="email" id="email" name="email" readonly  value="{{auth()->user()->userProfile->email}}"class="nes-input h-1/2 rounded-md outline-none text-black md:text-[16px] text-[14px] bg-white ">
  </div>
  <div class="flex justify-center items-center gap-8 pt-7 md:col-span-2 md:max-w-[700px] md:mx-auto md:px-10">
-    <a href="{{route('player.editProfile')}}" class="text-lg rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-3  hover:no-underline hover:text-white">
+    <a href="{{route('player.editProfile')}}" class="text-lg max-md:text-sm rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-3  hover:no-underline hover:text-white">
         Edit Profile
    </a >
-   <a href="{{route('player.editPassword')}}" class="text-lg rounded-lg outline-none text-white bg-slate-500 hover:bg-slate-600 p-3  hover:no-underline hover:text-white">Update Password</a>
+   <a href="{{route('player.editPassword')}}" class="text-lg max-md:text-sm rounded-lg outline-none text-white bg-slate-500 hover:bg-slate-600 p-3  hover:no-underline hover:text-white">Update Password</a>
  </div>
 </div>
 

@@ -2,9 +2,9 @@
 
 @section('content')
   {{-- content --}}
-    <nav class="flex gap-6 justify-end pr-4 items-center pt-6 pb-4">
+    <nav class="flex gap-6 justify-center md:justify-end pr-4 items-center pt-6 pb-4">
 
-        <a href="{{route('player.profile')}}" class="text-lg text-white hover:text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-600 px-6 py-3 ">
+        <a href="{{route('player.profile')}}" class="text-md md:text-lg text-white hover:text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-600 px-6 py-3 ">
             Profile
         </a>
 
@@ -51,7 +51,7 @@
                     </form>
                     <p class="pt-4 text-lg text-center">Select Modes</p>
                     <div class="modal-action">
-                     <div class="flex gap-4 justify-center items-center">
+                     <div class="flex gap-4 justify-center items-center max-md:flex-col max-md:w-full">
                         <a href="{{route('player.newGame')}}" class="px-5 py-3 rounded-md outline-none border-none bg-purple-500 text-white hover:no-underline">Easy</a>
                         <a  href="{{route('player.intermidiate')}}" class="px-5 py-3 rounded-md outline-none border-none bg-purple-500 text-white hover:no-underline">Intermediate</a>
                         <a  href="{{route('player.hard')}}" class="px-5 py-3 rounded-md outline-none border-none bg-purple-500 text-white hover:no-underline">Hard</a>

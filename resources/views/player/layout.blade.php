@@ -46,7 +46,7 @@
 
 
     @if (request()->route()->getName() == "player.dashboard" || request()->route()->getName() == "player.newGame" || request()->route()->getName() == "player.nextLevel")
-         <div class="play text-md max-md:text-center absolute top-5 left-5">Player:{{auth()->user()->userProfile->firstname}}</div>
+         <div class="play text-md max-md:text-sm max-md:text-center max-md:pt-4 md:absolute top-5 left-5">Player:{{auth()->user()->userProfile->firstname}}</div>
     @endif
 
      @yield('content')

@@ -2,7 +2,7 @@
 
 @section('content')
   {{-- content --}}
-    <nav class="flex gap-6 justify-center md:justify-end pr-4 items-center pt-6 pb-4">
+    <nav class="flex gap-6 max-md:justify-center justify-end pr-4 items-center pt-6 pb-4">
 
         <a href="{{route('player.profile')}}" class="text-md md:text-lg text-white hover:text-white rounded-md outline-none hover:no-underline bg-purple-500 hover:bg-purple-600 px-6 py-3 ">
             Profile

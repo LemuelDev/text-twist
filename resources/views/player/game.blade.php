@@ -301,8 +301,9 @@
                 nextBtn.innerHTML = 'Close';
                nextBtn.onclick = () => {
                  correctModal.close(); // Explicitly close the modal
+                  resumeTimer();
                  };
-                 resumeTimer();
+                
             }
         } else {
             document.getElementById("result").innerText = "❌ Incorrect! Try again.";

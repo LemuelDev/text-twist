@@ -47,7 +47,7 @@
             <div id="answer-boxes" class="space-y-4 mb-4"></div>
 
             <!-- Letter Selection Box -->
-            <div id="letter-box" class="flex justify-center flex-wrap gap-3 mb-4 overflow-x-auto"></div>
+            <div id="letter-box" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4"></div>
 
             <!-- Controls -->
             <div class="mt-4">
@@ -320,10 +320,14 @@ function nextLevel() {
                  lockAnswerBoxes(currentWordIndex);          
                 disableLetterButtons();
                 playSound('success')
+                pauseTimer();
                  // Show the solved word and its meaning at the bottom
                     
                  displaySolvedWord(currentWordIndex);
                  document.getElementById('my_modal_41').showModal();
+                 let nextBtn = document.getElementById("nextBtn");
+                 nextBtn.onclick = resumeTimer;
+
                  if (solvedWords.every(Boolean)) {
                     let nextBtn = document.getElementById("nextBtn");
                     nextBtn.innerHTML = 'Proceed';
@@ -400,6 +404,37 @@ function nextLevel() {
 
         let timer;
         let timeLeft = 60; // Set your time limit in seconds
+
+        function resumeTimer() {
+    // Check if a timer is not already running
+    if (!timer) {
+        // Start a new interval using the existing timeLeft value
+        timer = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                // Your game over logic here
+                if(hgh_lvl > highestLevel){
+                    document.getElementById('hgh_lvl').innerHTML = `NEW CLEARED LEVEL: ${hgh_lvl}`
+                } else {
+                    document.getElementById('hgh_lvl').innerHTML = `CLEARED LEVEL: ${hgh_lvl}`
+                }
+                if (points > highScore){
+                     document.getElementById('hgh_pts').innerHTML = `NEW HIGH SCORE: ${points}`
+                } else {
+                     document.getElementById('hgh_pts').innerHTML = `SCORE: ${points}`
+                }
+                let route = `/player/gameOver/${hgh_lvl}/${points}`;
+                document.getElementById("gameOver").href = route;
+                document.getElementById('my_modal_39').showModal();
+                disableLetterButtons();
+                playSound('game-over')
+            }
+        }, 1000);
+    }
+}
 
         function startTimer() {
             clearInterval(timer); // Clear any previous timer to prevent duplication

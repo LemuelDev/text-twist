@@ -343,9 +343,11 @@ function submitWord() {
             nextBtn.onclick = () => {
                 console.log("debugging");
                 document.getElementById('my_modal_41').close();
-                resumeTimer();
-            };
-        }
+                setTimeout(() => {
+                    resumeTimer();
+                }, 100); // 100 milliseconds is a safe, small delay.
+                        };
+                    }
     } else {
         // Incorrect word logic
         document.getElementById("result").innerText = "❌ Incorrect! Try again.";

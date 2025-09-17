@@ -47,7 +47,7 @@
             <div id="answer-boxes" class="space-y-4 mb-4"></div>
 
             <!-- Letter Selection Box -->
-            <div id="letter-box" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4"></div>
+            <div id="letter-box" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4 shadow-lg p-3 rounded-md"></div>
 
             <!-- Controls -->
             <div class="mt-4">
@@ -324,18 +324,25 @@ function submitWord() {
         displaySolvedWord(currentWordIndex);
         document.getElementById('my_modal_41').showModal();
 
-        // Logic for the Next Button
         const nextBtn = document.getElementById("nextBtn");
         
-        // Check if all words are solved
+        // Check if all words in the level are solved
         if (solvedWords.every(Boolean)) {
             // All words solved: Set the button to proceed to the next level
             document.getElementById('txtSolve').classList.remove('hidden');
             nextBtn.innerHTML = 'Proceed';
-            nextBtn.onclick = nextLevel; // nextLevel() should handle starting a new timer
+            
+            // Use an arrow function to first close the modal, then call nextLevel()
+            nextBtn.onclick = () => {
+                document.getElementById('my_modal_41').close();
+                nextLevel();
+            };
+
         } else {
-            // Not all words solved: Set the button to resume the timer
+            // Not all words solved: Keep the button as 'Close' and resume the timer
             nextBtn.innerHTML = 'Close';
+            
+            // Use an arrow function to first close the modal, then resume the timer
             nextBtn.onclick = () => {
                 document.getElementById('my_modal_41').close();
                 resumeTimer();

@@ -295,7 +295,7 @@ function nextLevel() {
     playSound('level-up');
 }
 
-       // Submit and check word
+   // Submit and check word
 function submitWord() {
     let currentWordIndex = solvedWords.indexOf(false);
     let userWord = selectedLetters.join("");
@@ -317,42 +317,25 @@ function submitWord() {
         disableLetterButtons();
         playSound('success')
         
-        // Always pause the timer when a word is solved and a modal is shown
+        // Pause the timer when a word is solved
         pauseTimer();
 
-        // Show the solved word and its meaning
+        // Show the solved word in the modal
         displaySolvedWord(currentWordIndex);
         document.getElementById('my_modal_41').showModal();
 
+        // Logic for the Next Button
+        const nextBtn = document.getElementById("nextBtn");
+        
         // Check if all words are solved
         if (solvedWords.every(Boolean)) {
-            // All words are solved, configure the button to go to the next level
+            // All words solved: Set the button to proceed to the next level
             document.getElementById('txtSolve').classList.remove('hidden');
-            let nextBtn = document.getElementById("nextBtn");
             nextBtn.innerHTML = 'Proceed';
-            
-            // This button click should trigger the next level logic
-            nextBtn.onclick = () => {
-                nextLevel();
-                // Because nextLevel() should handle starting a new timer, you don't need to resume here.
-            };
-
-            // Don't show the "Correct!" message at the top anymore
-            document.getElementById("result").innerText = ``;
-
-            // Adjust time and level for the next round
-            if (mode == "easy") {
-                timeLeft += 10;
-            } else if (mode == "intermediate") {
-                timeLeft += 20;
-            } else {
-                timeLeft += 40;
-            }
-            lvl++;
+            nextBtn.onclick = nextLevel; // nextLevel() should handle starting a new timer
         } else {
-            // Not all words are solved, so the next button should resume the timer
-            let nextBtn = document.getElementById("nextBtn");
-            nextBtn.innerHTML = 'Close'; // Set a default text for the button
+            // Not all words solved: Set the button to resume the timer
+            nextBtn.innerHTML = 'Close';
             nextBtn.onclick = () => {
                 document.getElementById('my_modal_41').close();
                 resumeTimer();
@@ -370,7 +353,7 @@ function submitWord() {
         playSound('wrong-ans')
     }
 
-    // Reset letters outside of the main conditional block to avoid redundancy
+    // Reset letters outside of the main conditional block
     selectedLetters = [];
     document.querySelectorAll("#letter-box button").forEach(btn => {
         btn.disabled = false;

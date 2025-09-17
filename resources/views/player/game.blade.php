@@ -30,7 +30,7 @@
     <div class="py-8">
         <div class="flex justify-center max-sm:text-center flex-wrap items-center flex-col gap-2 rounded-lg shadow-lg outline-none bg-transparent  md:max-w-[700px] w-full  mx-auto p-8 max-sm:pt-4 max-sm:px-3">
                 <!-- Timer -->
-            <div class="flex items-center justify-center gap-6 py-4">
+            <div class="flex items-center justify-center max-sm:flex-col gap-6 py-4">
                 <div id="current_lvl" class="text-lg text-white">
                     LEVEL: 1
                 </div>
@@ -136,7 +136,7 @@
             // Create answer boxes for 3 words
             words.forEach((word, wordIndex) => {
                 let wordContainer = document.createElement("div");
-                wordContainer.className = "flex justify-center space-x-2";
+                wordContainer.className = "flex flex-wrap justify-center gap-1";
 
                 for (let i = 0; i < word.length; i++) {
                     let box = document.createElement("div");
@@ -295,75 +295,88 @@ function nextLevel() {
     playSound('level-up');
 }
 
-        // Submit and check word
-        function submitWord() {
-            let currentWordIndex = solvedWords.indexOf(false);
-            let userWord = selectedLetters.join("");
-            let correctWord = words[currentWordIndex];
+       // Submit and check word
+function submitWord() {
+    let currentWordIndex = solvedWords.indexOf(false);
+    let userWord = selectedLetters.join("");
+    let correctWord = words[currentWordIndex];
 
-            console.log("User word:", userWord);
-            console.log("Correct word:", correctWord);
-            console.log("Current word index:", currentWordIndex);
-
-            if (userWord === correctWord) {
-                solvedWords[currentWordIndex] = true;
-                document.getElementById("result").innerText = `✅ Correct! Word ${currentWordIndex + 1} solved!`;
-                if(mode == "easy"){
-                    points += 20;
-                }else if(mode == "intermediate"){
-                    points += 50;
-                }else {
-                    points += 70;
-                }
-                document.getElementById("current_points").innerHTML = `POINTS: ${points} `
-
-                 lockAnswerBoxes(currentWordIndex);          
-                disableLetterButtons();
-                playSound('success')
-                pauseTimer();
-                 // Show the solved word and its meaning at the bottom
-                    
-                 displaySolvedWord(currentWordIndex);
-                 document.getElementById('my_modal_41').showModal();
-                 let nextBtn = document.getElementById("nextBtn");
-                 nextBtn.onclick = resumeTimer;
-
-                 if (solvedWords.every(Boolean)) {
-                    let nextBtn = document.getElementById("nextBtn");
-                    nextBtn.innerHTML = 'Proceed';
-                    nextBtn.onclick = nextLevel; // Corrected line
-                    let txtSolve = document.getElementById('txtSolve');
-                    txtSolve.classList.remove('hidden'); // Corrected line
-                    pauseTimer();
-                    document.getElementById('my_modal_41').showModal();
-                    document.getElementById("result").innerText = ``;
-                      if(mode == "easy"){
-                        timeLeft += 10;
-                    }else if(mode == "intermediate"){
-                        timeLeft += 20;
-                    }else {
-                        timeLeft += 40;
-                    }
-                    lvl++;
-                }
-            } else {
-                document.getElementById("result").innerText = "❌ Incorrect! Try again.";
-                selectedLetters = [];
-                document.querySelectorAll("#letter-box button").forEach(btn => {
-                    btn.disabled = false;
-                    btn.classList.remove("opacity-50");
-                });
-                updateAnswerBoxes();
-                playSound('wrong-ans')
-            }
-
-            selectedLetters = [];
-            document.querySelectorAll("#letter-box button").forEach(btn => {
-                btn.disabled = false;
-                btn.classList.remove("opacity-50");
-            });
+    if (userWord === correctWord) {
+        solvedWords[currentWordIndex] = true;
+        document.getElementById("result").innerText = `✅ Correct! Word ${currentWordIndex + 1} solved!`;
+        if (mode == "easy") {
+            points += 20;
+        } else if (mode == "intermediate") {
+            points += 50;
+        } else {
+            points += 70;
         }
+        document.getElementById("current_points").innerHTML = `POINTS: ${points} `
 
+        lockAnswerBoxes(currentWordIndex);
+        disableLetterButtons();
+        playSound('success')
+        
+        // Always pause the timer when a word is solved and a modal is shown
+        pauseTimer();
+
+        // Show the solved word and its meaning
+        displaySolvedWord(currentWordIndex);
+        document.getElementById('my_modal_41').showModal();
+
+        // Check if all words are solved
+        if (solvedWords.every(Boolean)) {
+            // All words are solved, configure the button to go to the next level
+            document.getElementById('txtSolve').classList.remove('hidden');
+            let nextBtn = document.getElementById("nextBtn");
+            nextBtn.innerHTML = 'Proceed';
+            
+            // This button click should trigger the next level logic
+            nextBtn.onclick = () => {
+                nextLevel();
+                // Because nextLevel() should handle starting a new timer, you don't need to resume here.
+            };
+
+            // Don't show the "Correct!" message at the top anymore
+            document.getElementById("result").innerText = ``;
+
+            // Adjust time and level for the next round
+            if (mode == "easy") {
+                timeLeft += 10;
+            } else if (mode == "intermediate") {
+                timeLeft += 20;
+            } else {
+                timeLeft += 40;
+            }
+            lvl++;
+        } else {
+            // Not all words are solved, so the next button should resume the timer
+            let nextBtn = document.getElementById("nextBtn");
+            nextBtn.innerHTML = 'Close'; // Set a default text for the button
+            nextBtn.onclick = () => {
+                document.getElementById('my_modal_41').close();
+                resumeTimer();
+            };
+        }
+    } else {
+        // Incorrect word logic
+        document.getElementById("result").innerText = "❌ Incorrect! Try again.";
+        selectedLetters = [];
+        document.querySelectorAll("#letter-box button").forEach(btn => {
+            btn.disabled = false;
+            btn.classList.remove("opacity-50");
+        });
+        updateAnswerBoxes();
+        playSound('wrong-ans')
+    }
+
+    // Reset letters outside of the main conditional block to avoid redundancy
+    selectedLetters = [];
+    document.querySelectorAll("#letter-box button").forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove("opacity-50");
+    });
+}
         function displaySolvedWord(index) {
             // Get the word and meaning from the 'wordsMeaning' array using the index
             let solvedWord = wordsMeaning[index].word;

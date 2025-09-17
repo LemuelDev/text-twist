@@ -333,6 +333,7 @@
 
     function pauseTimer() {
         clearInterval(timer);
+        timer = null;
     }
 
     function resumeTimer() {

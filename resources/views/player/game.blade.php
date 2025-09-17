@@ -69,7 +69,7 @@
                     <ul id="solved-words-list" class="text-sm text-center pt-2"></ul>
                 </div>
               <div class="modal-action">
-                    <button class="btn" id="nextBtn">Close</button>
+                    <button class="btn" id="nextBtn" type="button">Close</button>
                 </div>
             </dialog>
         </div>

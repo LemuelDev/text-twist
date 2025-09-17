@@ -39,7 +39,7 @@
                     // or offer a "click to enable sound" button.
                 });
             }
-        });
+        }); 
     </script>
      {{-- content --}}
         <div class="flex justify-center items-center flex-col  rounded-md outline-none pt-40">

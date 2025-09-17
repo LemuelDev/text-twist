@@ -44,8 +44,8 @@
         });
     </script>
 
-
-    @if (request()->route()->getName() == "player.dashboard" || request()->route()->getName() == "player.newGame" || request()->route()->getName() == "player.nextLevel")
+    
+    @if (request()->route()->getName() !== "player.profile")
          <div class="play text-md max-md:text-sm max-md:text-center max-md:pt-4 md:absolute top-5 left-5">Player:{{auth()->user()->userProfile->firstname}}</div>
     @endif
 

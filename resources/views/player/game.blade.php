@@ -28,7 +28,7 @@
 </nav>
 
     <div class="py-8">
-        <div class="flex justify-center max-sm:text-center flex-wrap items-center flex-col gap-2 rounded-lg shadow-lg outline-none bg-transparent  max-w-[700px] mx-auto p-8">
+        <div class="flex justify-center max-sm:text-center flex-wrap items-center flex-col gap-2 rounded-lg shadow-lg outline-none bg-transparent  md:max-w-[700px] w-full  mx-auto p-8 max-sm:pt-4 max-sm:px-3">
                 <!-- Timer -->
             <div class="flex items-center justify-center gap-6 py-4">
                 <div id="current_lvl" class="text-lg text-white">

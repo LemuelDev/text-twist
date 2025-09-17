@@ -85,7 +85,7 @@ class AdminController extends Controller
     public function leaderboards(){
 
         $users = Userprofile::where('user_type', 'player')
-        ->orderBy('highscore', 'desc')
+        ->orderBy('highscore', 'asc')
         ->paginate(5);
 
         return view ("admin.leaderboards", compact("users"));

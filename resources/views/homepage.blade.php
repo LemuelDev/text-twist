@@ -42,9 +42,9 @@
         }); 
     </script>
      {{-- content --}}
-        <div class="flex justify-center items-center flex-col  rounded-md outline-none pt-40">
+        <div class="flex justify-center text-center items-center flex-col  rounded-md outline-none pt-40">
             <h4>Text Twist Game</h4>
-            <p class="text-xl pt-4 text-yellow-200">Computer Programming Edition!</p>
+            <p class="text-xl pt-4 text-yellow-200 text-center">Computer Programming Edition!</p>
             <div class="flex justify-center items-center gap-6 py-6 px-4">
 
                 <a href="{{route("login")}}" class="text-xl rounded-lg outline-none text-white bg-green-500 hover:bg-green-600 p-6 hover:no-underline hover:text-white">Login</a>

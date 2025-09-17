@@ -341,6 +341,7 @@ function submitWord() {
             
             // Use an arrow function to first close the modal, then resume the timer
             nextBtn.onclick = () => {
+                console.log("debugging");
                 document.getElementById('my_modal_41').close();
                 resumeTimer();
             };

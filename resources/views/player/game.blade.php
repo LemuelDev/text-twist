@@ -299,14 +299,10 @@
                 };
             } else {
                 nextBtn.innerHTML = 'Close';
-              nextBtn.onclick = () => {
-                    // Close the modal first
-                    correctModal.close();
-                    // Use a slight delay to ensure the modal is fully closed before resuming the timer
-                    setTimeout(() => {
-                        resumeTimer();
-                    }, 100); // 100 milliseconds is a safe delay
-                };
+               nextBtn.onclick = () => {
+                 correctModal.close(); // Explicitly close the modal
+                 };
+                 resumeTimer();
             }
         } else {
             document.getElementById("result").innerText = "❌ Incorrect! Try again.";

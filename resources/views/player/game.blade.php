@@ -68,11 +68,8 @@
                     <h3 class="text-sm text-center">Solved Words</h3>
                     <ul id="solved-words-list" class="text-sm text-center pt-2"></ul>
                 </div>
-                <div class="modal-action">
-                    <form method="dialog">
-                    <!-- if there is a button in form, it will close the modal -->
+              <div class="modal-action">
                     <button class="btn" id="nextBtn">Close</button>
-                    </form>
                 </div>
             </dialog>
         </div>

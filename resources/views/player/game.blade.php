@@ -114,13 +114,7 @@
     const correctModal = document.getElementById('my_modal_41');
     const gameOverModal = document.getElementById('my_modal_39');
 
-    // --- Modal Event Listener ---
-    correctModal.addEventListener('close', () => {
-        // Only resume the timer if not all words have been solved
-        if (!solvedWords.every(Boolean)) {
-            resumeTimer();
-        }
-    });
+   
 
     // --- Game Functions ---
     function playSound(soundName) {
@@ -305,9 +299,14 @@
                 };
             } else {
                 nextBtn.innerHTML = 'Close';
-               nextBtn.onclick = () => {
-                 correctModal.close(); // Explicitly close the modal
-        };
+              nextBtn.onclick = () => {
+                    // Close the modal first
+                    correctModal.close();
+                    // Use a slight delay to ensure the modal is fully closed before resuming the timer
+                    setTimeout(() => {
+                        resumeTimer();
+                    }, 100); // 100 milliseconds is a safe delay
+                };
             }
         } else {
             document.getElementById("result").innerText = "❌ Incorrect! Try again.";

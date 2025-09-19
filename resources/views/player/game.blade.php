@@ -48,7 +48,7 @@
 
             <!-- Letter Selection Box -->
             <div class="flex justify-center">
-                <div id="letter-box" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4 shadow-lg p-3 rounded-md"></div>
+                <div id="letter-box" class=" place-content-center grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4 shadow-lg p-3 rounded-md"></div>
             </div>
 
             <!-- Controls -->

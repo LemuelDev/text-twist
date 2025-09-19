@@ -47,7 +47,9 @@
             <div id="answer-boxes" class="space-y-4 mb-4"></div>
 
             <!-- Letter Selection Box -->
-            <div id="letter-box" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4 shadow-lg p-3 rounded-md"></div>
+            <div class="flex justify-center">
+                <div id="letter-box" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4 shadow-lg p-3 rounded-md"></div>
+            </div>
 
             <!-- Controls -->
             <div class="mt-4">

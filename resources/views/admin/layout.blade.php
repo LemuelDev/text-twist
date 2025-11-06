@@ -17,7 +17,11 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        
+         body {
+        background-image: url('{{ asset('bg-player.jpg') }}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        }
     </style>
     
 </head>

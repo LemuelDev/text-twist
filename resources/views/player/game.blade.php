@@ -54,7 +54,8 @@
 
             <!-- Controls -->
             <div class="mt-4">
-                <button onclick="clearAnswer()" class="bg-red-700 text-white px-4 py-2 rounded text-lg">Clear</button>
+                <button onclick="clearAnswer()" class="bg-yellow-700 text-white px-4 py-2 rounded text-lg">Clear</button>
+                <button onclick="deleteAnswer()" class="bg-red-700 text-white px-4 py-2 rounded text-lg">Delete</button>
                 <button onclick="submitWord()" class="bg-purple-500 text-white px-4 py-2 rounded text-lg">Submit</button>
             </div>
 
@@ -199,6 +200,25 @@
         }
         updateAnswerBoxes();
     }
+
+    function deleteAnswer() {
+    // 1. Reset all buttons that were previously used
+    selectedButtonsHistory.forEach(button => {
+        if (button) {
+            button.disabled = false;
+            button.classList.remove("opacity-50");
+        }
+    });
+
+    // 2. Clear the arrays tracking the answer and button history
+    selectedLetters = []; // Clears all selected letters
+    selectedButtonsHistory = []; // Clears the history of used buttons
+
+    // 3. Update the HTML display (e.g., the textboxes)
+    updateAnswerBoxes();
+    
+    // Optional: You might want to focus on the first input box or similar
+}
     
     function nextLevel() {
         console.log("Next Words Triggered");

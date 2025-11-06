@@ -29,7 +29,7 @@
                         
                     <div>
                         <label for="" class="text-sm">Sort by:</label>
-                        <select name="" id="filter-user" class="py-2 px-4 rounded-lg border border-white-500 text-black bg-transparent">
+                        <select name="" id="filter-user" class="py-2 px-4 rounded-lg border border-white-500 text-white bg-transparent">
                             <option value="{{route("admin.approveUsers")}}" {{request()->route()->getName() === "admin.approveUsers" ? 'selected' : ''}}>Approved</option>
                             <option value="{{route("admin.pendingUsers")}}"  {{request()->route()->getName() === "admin.pendingUsers" ? 'selected' : ''}}>Pending</option>
                         </select>

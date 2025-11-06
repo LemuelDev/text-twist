@@ -1,7 +1,7 @@
 @extends('player.layout')
 
 @section('content')
-<div class="play text-md max-md:text-center  max-md:pt-4 md:absolute top-5 left-5">Player Profile</div>
+{{-- <div class="play text-md max-md:text-center  max-md:pt-4 md:absolute top-5 left-5">Player Profile</div> --}}
         
 
 

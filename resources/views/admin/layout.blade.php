@@ -16,10 +16,12 @@
             padding: 0;
             font-family: 'Poppins', sans-serif;
         }
-    </style>
 
+        
+    </style>
+    
 </head>
-<body class="bg-[#2b52ff] h-auto text-white">
+<body class=" h-auto text-white">
         
         @yield('content')
 

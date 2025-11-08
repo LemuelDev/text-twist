@@ -21,10 +21,10 @@
     <div>
         <button class="btn btn-secondary text-white" onclick="my_modal_4.showModal()">Add Word</button>
     <label for="" class="text-sm">Sort by:</label>
-         <select name="" id="filter-user" class="py-2 px-4 rounded-lg border border-white-500 text-white bg-transparent">
+         <select name="" id="filter-user" class="py-2 px-4 rounded-lg border border-white-500 text-white">
             <option value="{{route("admin.questions")}}" {{request()->route()->getName() === "admin.questions" ? 'selected' : ''}}>Easy</option>
             <option value="{{route("admin.intermediate")}}"  {{request()->route()->getName() === "admin.intermediate" ? 'selected' : ''}}>Intermediate</option>
-             <option value="{{route("admin.hard")}}"  {{request()->route()->getName() === "admin.hard" ? 'selected' : ''}}>hard</option>
+             <option value="{{route("admin.hard")}}"  {{request()->route()->getName() === "admin.hard" ? 'selected' : ''}}>Hard</option>
         </select>
          <script>
                       // Get the select element

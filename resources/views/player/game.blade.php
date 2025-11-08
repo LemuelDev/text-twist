@@ -80,6 +80,32 @@
     </div>
 
     
+<dialog id="my_modal_39" class="modal">
+    <div class="modal-box">
+    <h3 class="text-xl max-sm:text-sm font-bold text-white">Game Over!</h3>
+    <p class="py-4 pt-8 text-center text-white text-2xl max-sm:text-sm">⏳ Time's up!</p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_lvl"></p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_pts"></p>
+    <div class="modal-action">
+        <a id="gameOver" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
+    </div>
+    </div>
+</dialog>
+
+<dialog id="my_modal_40" class="modal">
+    <div class="modal-box">
+    <h3 class="text-xl max-sm:text-sm font-bold text-white">Congratulations!</h3>
+    <p class="py-4 pt-8 text-center text-white text-2xl max-sm:text-sm"> You cleared all the levels and questions!</p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_lvl1"></p>
+    <p class="py-4 text-center text-white text-sm" id="hgh_pts1"></p>
+    <div class="modal-action">
+        <a id="gameComplete" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
+    </div>
+    </div>
+</dialog>
+
+
+    
     {{-- <dialog id="my_modal_40" class="modal">
         <div class="modal-box">
         <h3 class="text-xl font-bold">Success!</h3>
@@ -117,7 +143,7 @@
     // Get a reference to your modals
     const correctModal = document.getElementById('my_modal_41');
     const gameOverModal = document.getElementById('my_modal_39');
-
+    const clearedLevel = document.getElementById('my_modal_40');
    
 
     // --- Game Functions ---
@@ -239,11 +265,11 @@
             console.log(data);
 
             if (data.status === 'completed') {
-                document.getElementById('hgh_lvl').innerHTML = `Highest Level: ${hgh_lvl}`;
-                document.getElementById('hgh_pts').innerHTML = `Highest Points: ${points}`;
+                document.getElementById('hgh_lvl1').innerHTML = `Highest Level: ${hgh_lvl}`;
+                document.getElementById('hgh_pts1').innerHTML = `Highest Points: ${points}`;
                 let route = `/player/gameOver/${hgh_lvl}/${points}`;
-                document.getElementById("gameOver").href = route;
-                gameOverModal.showModal();
+                document.getElementById("gameComplete").href = route;
+                clearedLevel.showModal();
                 disableLetterButtons();
                 return;
             }
@@ -455,30 +481,6 @@
     });
 </script>
 
-
-<dialog id="my_modal_39" class="modal">
-    <div class="modal-box">
-    <h3 class="text-xl max-sm:text-sm font-bold text-white">Game Over!</h3>
-    <p class="py-4 pt-8 text-center text-white text-2xl max-sm:text-sm">⏳ Time's up!</p>
-    <p class="py-4 text-center text-white text-sm" id="hgh_lvl"></p>
-    <p class="py-4 text-center text-white text-sm" id="hgh_pts"></p>
-    <div class="modal-action">
-        <a id="gameOver" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
-    </div>
-    </div>
-</dialog>
-
-<dialog id="my_modal_40" class="modal">
-    <div class="modal-box">
-    <h3 class="text-xl max-sm:text-sm font-bold text-white">Congratulations!</h3>
-    <p class="py-4 pt-8 text-center text-white text-2xl max-sm:text-sm"> You cleared all the levels and questions!</p>
-    <p class="py-4 text-center text-white text-sm" id="hgh_lvl1"></p>
-    <p class="py-4 text-center text-white text-sm" id="hgh_pts1"></p>
-    <div class="modal-action">
-        <a id="gameComplete" class="py-4 px-8 rounded-lg outline-none text-white bg-blue-700 hover:bg-blue-800 text-sm no-underline hover:no-underline">BACK TO DASHBOARD</a>
-    </div>
-    </div>
-</dialog>
 
 
 @endsection

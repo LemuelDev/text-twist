@@ -82,6 +82,8 @@ Route::get('/game/{mode}/next-level/{currentLvl}', [GameController::class, 'next
 
 // admin routes
 
+Route::get('/admin/leaderboards/download/all/', [AdminController::class, 'download'])->name('admin.download');
+
 Route::get("/admin/approved-users", [AdminController::class, "approvedUsers"])->name("admin.approveUsers");
 
 Route::get("/admin/pending-users", [AdminController::class, "pendingUsers"])->name("admin.pendingUsers");

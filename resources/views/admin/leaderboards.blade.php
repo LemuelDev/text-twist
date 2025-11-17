@@ -18,7 +18,7 @@
                 <!-- Your main content goes here -->
                 <div class="flex max-sm:flex-col justify-center max-sm:gap-5 sm:justify-between items-center">
                     <h1 class="lg:text-3xl text-2xl font-bold ">Leaderboards 🔥</h1>
-                    
+                    <a href="{{ route('admin.download') }}" class="btn btn-primary">Generate Report</a>
                 </div>
 
                 @include('admin.tableLeaderboards') 

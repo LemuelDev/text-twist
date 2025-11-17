@@ -8,12 +8,34 @@ use App\Models\Level;
 use App\Models\User;
 use App\Models\Userprofile;
 use App\Models\Word;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
+
+     public function download(Request $request)
+{
+
+
+    // 3. Pass the appointments and date range to the view.
+    $currentDate = Carbon::now()->format('F j, Y');
+
+    $leaderboards = Userprofile::where('user_type', 'player')
+        ->orderBy('highscore', 'asc')
+        ->get();
+
+    $pdf = Pdf::loadView('reports.leaderboards_table', compact('leaderboards', 'currentDate'));
+    
+    // 4. Create a dynamic filename for the PDF.
+    $filename = 'Leaderboards_' . $currentDate . '.pdf';
+
+    // 5. Download the PDF.
+    return $pdf->download($filename);
+}
     public function approvedUsers() {
 
         $query = Userprofile::where('isPending', 'approved')

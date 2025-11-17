@@ -25,7 +25,7 @@ class AdminController extends Controller
     $currentDate = Carbon::now()->format('F j, Y');
 
     $leaderboards = Userprofile::where('user_type', 'player')
-        ->orderBy('highscore', 'asc')
+        ->orderBy('highscore', 'desc')
         ->get();
 
     $pdf = Pdf::loadView('reports.leaderboards_table', compact('leaderboards', 'currentDate'));
